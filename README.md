@@ -5,6 +5,12 @@ This project is inspired by Google Map application for IOS.
 
 This is supposed to work on IOS 5+. 
 
+Please be sure that [Google Maps SDK for IOS](https://developers.google.com/maps/documentation/ios/index) and [Google Places API](https://developers.google.com/places/documentation/) services are enabled in [Google Developer Console](https://code.google.com/apis/console) and API keys are generated properly.
+
+Please carefully read  the [usage limits](https://developers.google.com/places/policies#usage_limits) for Places API.
+
+>Everyone is invited to contribute to improve and add more features to this library
+
 ## Usage
 Add the Google API Keys in "P2MSGoogleMapHelper.h" before running this sample.
 
@@ -55,7 +61,7 @@ will result in
 	P2MSUserTrackingButton.m
 
 ####Know Issue
-- Memory warning in map rotation
+- Memory warning in map rotation (from MKMapKit)
 
 ###Credits
 - [Map Pins](http://allur.co/psd/map-markers-flags-pins-psd/) (http://allur.co/psd/map-markers-flags-pins-psd/)
