@@ -22,8 +22,9 @@ Add the Google API Keys in "P2MSGoogleMapHelper.h" before running this sample.
 Loading mapView with predefined Place Name and Coordinate
 
     P2MSMapViewController *mapViewC = [[P2MSMapViewController alloc]initWithNibName:nil bundle:nil];
-    mapViewC.locationNameToGo = @"Shop Name, #xx-xx, Clementi Shopping Mall,\n Singapore";
-    mapViewC.locToGo = CLLocationCoordinate2DMake(1.315047,103.764752);
+    
+    [mapViewC setDefaultLocation:@"Shop Name, #xx-xx, Clementi Shopping Mall,\n Singapore" withCoordinate:CLLocationCoordinate2DMake(1.315047,103.764752)];
+    
     mapViewC.mapType = MAP_TYPE_GOOGLE;// MAP_TYPE_GOOGLE (default), MAP_TYPE_APPLE
     
 

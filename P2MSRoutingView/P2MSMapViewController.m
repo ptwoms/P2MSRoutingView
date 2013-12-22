@@ -55,6 +55,9 @@
     NSInteger travel_mode_index;
 }
 
+//@property (nonatomic, retain) NSString *locationNameToGo;
+//@property (nonatomic) CLLocationCoordinate2D locToGo;
+
 @end
 
 @implementation P2MSMapViewController
@@ -64,7 +67,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        _locToGo = kCLLocationCoordinate2DInvalid;
         travel_mode_index = -1;
         isGestureRecognizerOverlapped = NO;
         tableViewScrollEnable = YES;
@@ -72,6 +74,17 @@
         _mapType = MAP_TYPE_GOOGLE;
     }
     return self;
+}
+
+- (void)setDefaultLocation:(NSString *)locNameToGo withCoordinate:(CLLocationCoordinate2D)locToGo{
+    if (!geocodeResult) {
+        geocodeResult = [[GeocodeResult alloc]init];
+    }
+    geocodeResult.address = (locNameToGo)?locNameToGo:[NSString stringWithFormat:@"%f,%f", locToGo.latitude, locToGo.longitude];
+    geocodeResult.latLng = locToGo;
+    CGFloat deltaValue = 0.4*METERS_PER_MILE;
+    geocodeResult.southwest = CLLocationCoordinate2DMake(locToGo.latitude  + deltaValue, locToGo.longitude  + deltaValue);
+    geocodeResult.northeast = CLLocationCoordinate2DMake(locToGo.latitude  - deltaValue, locToGo.longitude  - deltaValue);
 }
 
 - (void)showRouteInfoViewForTravelMode:(NSString *)travel_mode{
@@ -149,7 +162,6 @@
 {
     [super viewDidLoad];
     allRoutes = nil;
-    geocodeResult = nil;
     lastPageIndex = -1;
     
     if (_mapType == MAP_TYPE_GOOGLE && ![P2MSGlobalFunctions sharedInstance].isIOS_5_OR_LATER) {
@@ -180,12 +192,15 @@
     [self addRouteButtonToSearchBar];
 }
 
+
 - (void)initMapView{
-    CLLocationCoordinate2D locToDisplay = _locToGo;
+    CLLocationCoordinate2D locToDisplay;
     
     //use the category provided in http://troybrant.net/blog/2010/01/set-the-zoom-level-of-an-mkmapview/, if you want to set the same zoom level for MapKit as Google
     CGFloat mapKitZoom = 0.8, googlMapZoom = 15;
-    if (!CLLocationCoordinate2DIsValid(locToDisplay)) {
+    if (CLLocationCoordinate2DIsValid(geocodeResult.latLng)) {
+        locToDisplay = geocodeResult.latLng;
+    }else{
         locToDisplay = DEFAULT_LOCATION;
         mapKitZoom = 9000;
         googlMapZoom = 2;
@@ -212,7 +227,7 @@
         
     }
     mapView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self createEndMarkerForCoordinate:_locToGo];
+    [self createEndMarkerForCoordinate:geocodeResult.latLng];
 }
 
 - (void)centerMapToLatLng:(CLLocationCoordinate2D)loc showPin:(BOOL)show{
@@ -383,14 +398,8 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    if (!(allRoutes || geocodeResult) && CLLocationCoordinate2DIsValid(_locToGo)) {
-        if (_locationNameToGo) {
-            geocodeResult = [[GeocodeResult alloc]init];
-            geocodeResult.address = _locationNameToGo;
-            geocodeResult.latLng = _locToGo;
-            CGFloat deltaValue = 0.4*METERS_PER_MILE;
-            geocodeResult.southwest = CLLocationCoordinate2DMake(_locToGo.latitude  + deltaValue, _locToGo.longitude  + deltaValue);
-            geocodeResult.northeast = CLLocationCoordinate2DMake(_locToGo.latitude  - deltaValue, _locToGo.longitude  - deltaValue);
+    if (!allRoutes && CLLocationCoordinate2DIsValid(geocodeResult.latLng)) {
+        if (geocodeResult.address) {
             panViewVisibleHeight = 70;
             panViewType = PAN_VIEW_SEARCH;
             [self populatePannedViewAnimated:NO];
@@ -427,9 +436,6 @@
     }else if (geocodeResult) {
         routingVC.endLocDescription = [NSString stringWithFormat:@"%f,%f", geocodeResult.latLng.latitude, geocodeResult.latLng.longitude];
         routingVC.endAddress = geocodeResult.address;
-    }else{
-        routingVC.endLocDescription = [NSString stringWithFormat:@"%f,%f", _locToGo.latitude, _locToGo.longitude];
-        routingVC.endAddress = _locationNameToGo;
     }
     routingVC.travel_mode_index = travel_mode_index;
     routingVC.delegate = self;
@@ -1204,6 +1210,7 @@
 }
 
 - (void)queryPlaceAutoComplete:(NSString *)textToSearch{
+    if ([searchController.searchBar.txtField.text isEqualToString:[self firstPartOfAddress:geocodeResult.address]])return;
     if (textToSearch.length && !curRequest) {
         curRequest = [P2MSGoogleMapHelper getPlaceSuggestionsForQuery:textToSearch withCurLocation:[LocationManager sharedInstance].curLoc withDelegate:self];
         if (curRequest) {
@@ -1217,13 +1224,20 @@
     }
 }
 
-- (void)searchBarSetAddress:(NSString *)addressText{
-    NSRange curRange = [addressText rangeOfString:@","];
-    NSString *modifiedText = addressText;
-    if (curRange.location != NSNotFound) {
-        modifiedText = [addressText substringWithRange:NSMakeRange(0, curRange.location)];
+- (NSString *)firstPartOfAddress:(NSString *)addressText{
+    if (addressText){
+        NSRange curRange = [addressText rangeOfString:@","];
+        NSString *firstPart = addressText;
+        if (curRange.location != NSNotFound) {
+            firstPart = [addressText substringWithRange:NSMakeRange(0, curRange.location)];
+        }
+        return firstPart;
     }
-    searchController.searchBar.txtField.text = modifiedText;
+    return nil;
+}
+
+- (void)searchBarSetAddress:(NSString *)addressText{
+    searchController.searchBar.txtField.text = [self firstPartOfAddress:addressText];
     [searchController.searchBar clearAdditionalViews];
     UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [cancelBtn setBackgroundImage:[UIImage imageNamed:@"close"] forState:UIControlStateNormal];
@@ -1247,7 +1261,6 @@
             geocodeResult = nil;
             panViewType = PAN_VIEW_SEARCH;
             geocodeResult = [P2MSGoogleMapHelper googleMapGeocode:[responseJSON objectForKey:@"results"]];
-            _locToGo = geocodeResult.latLng;
             [self createEndMarkerForCoordinate:geocodeResult.latLng];
             [self setMapViewNorthEast:geocodeResult.northeast andSouthWest:geocodeResult.southwest withEdgeInset:UIEdgeInsetsMake(50, 15, 0, 15) willhighLightNE:NO];
             [self populatePannedViewAnimated:YES];
@@ -1304,7 +1317,6 @@
         [(MKMapView *)mapView removeAnnotation:endMarker];
     }
     endMarker = nil;
-    _locToGo = kCLLocationCoordinate2DInvalid;
     [self removeEndMarker];
 }
 

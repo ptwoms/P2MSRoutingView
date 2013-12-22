@@ -31,8 +31,8 @@ typedef enum {
 
 @interface P2MSMapViewController : UIViewController<GMSMapViewDelegate, P2MSRoutingViewControllerDelegate, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, NSURLConnectionDelegate, P2MSSearchDisplayViewControllerDelegate, P2MSSearchBarDelegate, MKMapViewDelegate>
 
-@property (nonatomic, retain) NSString *locationNameToGo;
-@property (nonatomic) CLLocationCoordinate2D locToGo;
 @property (nonatomic) MAP_TYPE mapType;
+
+- (void)setDefaultLocation:(NSString *)locNameToGo withCoordinate:(CLLocationCoordinate2D)locToGo;
 
 @end

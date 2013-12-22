@@ -22,8 +22,7 @@
     [GMSServices provideAPIKey:GOOGLEMAP_IOS_KEY];
     
     P2MSMapViewController *mapViewC = [[P2MSMapViewController alloc]initWithNibName:nil bundle:nil];
-    mapViewC.locationNameToGo = @"Shop Name, #xx-xx, Clementi Shopping Mall,\n Singapore";
-    mapViewC.locToGo = CLLocationCoordinate2DMake(1.315047,103.764752);
+    [mapViewC setDefaultLocation:@"Shop Name, #xx-xx, Clementi Shopping Mall,\n Singapore" withCoordinate:CLLocationCoordinate2DMake(1.315047,103.764752)];
     mapViewC.mapType = MAP_TYPE_GOOGLE;
     self.window.rootViewController = mapViewC;
     self.window.backgroundColor = [UIColor whiteColor];
