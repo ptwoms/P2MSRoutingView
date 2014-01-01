@@ -43,7 +43,4 @@ return shared##classname;                           \
 + (UIImage *)imageWithColor:(UIColor *)color forRect:(CGRect)rect;
 + (UIImage *)imageWithColor:(UIColor *)color forRect:(CGRect)rect withCornerRadius:(CGFloat)cornerRadius;
 
-+ (void)hidePoweredByGoogleLogo:(BOOL)hidden inView:(UIView *)viewToDisplay forRect:(CGRect)rect;
-+ (void)movePoweredByGoogleLoginInView:(UIView *)viewToDisplay toPoint:(CGPoint)point;
-
 @end

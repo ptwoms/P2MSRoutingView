@@ -92,25 +92,4 @@ SINGLETON_GCD(P2MSGlobalFunctions);
 
 }
 
-+ (void)hidePoweredByGoogleLogo:(BOOL)hidden inView:(UIView *)viewToDisplay forRect:(CGRect)rect{
-    if (hidden) {
-        [[viewToDisplay viewWithTag:121211]removeFromSuperview];
-    }else{
-        UIImageView *imgView = [[UIImageView alloc]initWithFrame:rect];
-        imgView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-        [imgView setImage:[UIImage imageNamed:@"powered-by-google-on-white"]];
-        imgView.tag = 121211;
-        [viewToDisplay addSubview:imgView];
-    }
-}
-
-
-+ (void)movePoweredByGoogleLoginInView:(UIView *)viewToDisplay toPoint:(CGPoint)point{
-    UIView *logoView = [viewToDisplay viewWithTag:121211];
-    CGRect rect = logoView.frame;
-    rect.origin = point;
-    logoView.frame = rect;
-}
-
-
 @end

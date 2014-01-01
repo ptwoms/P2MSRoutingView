@@ -83,24 +83,3 @@ typedef enum {
 @property (nonatomic, retain) NSString *maneuver;
 
 @end
-
-
-@interface P2MSMapHelper : NSObject
-
-+ (P2MSNetworkRequest *)getLocationSuggestionsForQuery:(NSString *)queryString withCurLocation:(CLLocationCoordinate2D)curLoc withDelegate:(id<NSURLConnectionDelegate>)delegate;
-+ (NSArray *)parseSuggestions:(NSArray *)jsonData;
-
-
-+ (P2MSNetworkRequest *) getDirectionFromLocation:(NSString *) startLoc to:(NSString *) endLoc forTravelMode:(NSString *)mode alternatives:(BOOL)alternative withNetworkDelegate:(id<NSURLConnectionDelegate>)delegate;
-+ (NSArray *)parseGoogleDirections:(NSArray *)routesJsonData forTravelMode:(NSString *)travel_mode;
-
-+ (NSMutableArray *)getLocationsFromPolyLineString:(NSString *)encodedStr;
-
-+ (P2MSNetworkRequest *)getPlaceSuggestionsForQuery:(NSString *)queryString withCurLocation:(CLLocationCoordinate2D)curLoc withDelegate:(id<NSURLConnectionDelegate>)delegate;
-
-+ (P2MSNetworkRequest *) geoDecodeAddress:(NSString *)addressToDecode withNetworkDelegate:(id<NSURLConnectionDelegate>) delegate;
-
-+ (P2MSLocationInfo *)googleMapGeocode:(NSArray *)results;
-
-
-@end

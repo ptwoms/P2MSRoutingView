@@ -31,7 +31,6 @@
 		C81B240D18279B2D0068B552 /* no_route.png in Resources */ = {isa = PBXBuildFile; fileRef = C81B240B18279B2D0068B552 /* no_route.png */; };
 		C81B241118279D370068B552 /* P2MSActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = C81B241018279D370068B552 /* P2MSActivityIndicator.m */; };
 		C81B241318279DE50068B552 /* loading_1.png in Resources */ = {isa = PBXBuildFile; fileRef = C81B241218279DE50068B552 /* loading_1.png */; };
-		C81B7AF418421A8F009508DB /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C81B7AF318421A8F009508DB /* GoogleMaps.framework */; };
 		C81B7AF618421A9A009508DB /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C81B7AF518421A9A009508DB /* GoogleMaps.bundle */; };
 		C81C3A14182F595F001E44E2 /* search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C81C3A13182F595F001E44E2 /* search@2x.png */; };
 		C81C70BD1849DBF0000D401B /* powered-by-google-on-white.png in Resources */ = {isa = PBXBuildFile; fileRef = C81C70BB1849DBF0000D401B /* powered-by-google-on-white.png */; };
@@ -55,10 +54,18 @@
 		C8210F2717FC701E004CC812 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8210F2617FC701E004CC812 /* SystemConfiguration.framework */; };
 		C83406B6182A977D009E1316 /* P2MSSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C83406B5182A977D009E1316 /* P2MSSearchBar.m */; };
 		C83406BA182AA305009E1316 /* routing.png in Resources */ = {isa = PBXBuildFile; fileRef = C83406B9182AA305009E1316 /* routing.png */; };
+		C843770F187405750006E1B6 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C843770E187405750006E1B6 /* MediaPlayer.framework */; };
+		C84377111874059B0006E1B6 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C84377101874059B0006E1B6 /* MobileCoreServices.framework */; };
+		C8437713187405AD0006E1B6 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8437712187405AD0006E1B6 /* Security.framework */; };
+		C843771D187410360006E1B6 /* ArcGIS.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C843771C187410360006E1B6 /* ArcGIS.bundle */; };
+		C84377211874184C0006E1B6 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C84377201874184C0006E1B6 /* GoogleMaps.framework */; };
+		C843772418741CF70006E1B6 /* P2MSGoogleMapAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = C843772318741CF70006E1B6 /* P2MSGoogleMapAPI.m */; };
+		C8437727187448250006E1B6 /* P2MSOneMapAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = C8437726187448250006E1B6 /* P2MSOneMapAPI.m */; };
 		C86591C71872F314008FE04A /* P2MSGoogleMap.m in Sources */ = {isa = PBXBuildFile; fileRef = C86591C61872F314008FE04A /* P2MSGoogleMap.m */; };
 		C86591CD1872F7E1008FE04A /* P2MSMapHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C86591CC1872F7E1008FE04A /* P2MSMapHelper.m */; };
 		C86591D31873A85F008FE04A /* P2MSAppleMap.m in Sources */ = {isa = PBXBuildFile; fileRef = C86591D21873A85F008FE04A /* P2MSAppleMap.m */; };
 		C86591D61873F018008FE04A /* Annotation.m in Sources */ = {isa = PBXBuildFile; fileRef = C86591D51873F018008FE04A /* Annotation.m */; };
+		C86591D91873FC46008FE04A /* P2MSEsriMap.m in Sources */ = {isa = PBXBuildFile; fileRef = C86591D81873FC46008FE04A /* P2MSEsriMap.m */; };
 		C86ED8E2182920EA00A3AF6D /* P2MSShadowView.m in Sources */ = {isa = PBXBuildFile; fileRef = C86ED8E1182920EA00A3AF6D /* P2MSShadowView.m */; };
 		C86ED8E5182940BA00A3AF6D /* UIView+P2MSShadowCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C86ED8E4182940BA00A3AF6D /* UIView+P2MSShadowCategory.m */; };
 		C89A999A1800F3D300810E85 /* bus-highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = C89A99821800F3D300810E85 /* bus-highlight.png */; };
@@ -135,7 +142,6 @@
 		C81B240F18279D370068B552 /* P2MSActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = P2MSActivityIndicator.h; sourceTree = "<group>"; };
 		C81B241018279D370068B552 /* P2MSActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = P2MSActivityIndicator.m; sourceTree = "<group>"; };
 		C81B241218279DE50068B552 /* loading_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading_1.png; sourceTree = "<group>"; };
-		C81B7AF318421A8F009508DB /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
 		C81B7AF518421A9A009508DB /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GoogleMaps.bundle; sourceTree = "<group>"; };
 		C81C3A13182F595F001E44E2 /* search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search@2x.png"; sourceTree = "<group>"; };
 		C81C70BB1849DBF0000D401B /* powered-by-google-on-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "powered-by-google-on-white.png"; sourceTree = "<group>"; };
@@ -160,6 +166,16 @@
 		C83406B4182A977D009E1316 /* P2MSSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = P2MSSearchBar.h; sourceTree = "<group>"; };
 		C83406B5182A977D009E1316 /* P2MSSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = P2MSSearchBar.m; sourceTree = "<group>"; };
 		C83406B9182AA305009E1316 /* routing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = routing.png; sourceTree = "<group>"; };
+		C843770E187405750006E1B6 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		C84377101874059B0006E1B6 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		C8437712187405AD0006E1B6 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		C843771A187410170006E1B6 /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GoogleMaps.bundle; sourceTree = "<group>"; };
+		C843771C187410360006E1B6 /* ArcGIS.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ArcGIS.bundle; sourceTree = "<group>"; };
+		C84377201874184C0006E1B6 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
+		C843772218741CF70006E1B6 /* P2MSGoogleMapAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = P2MSGoogleMapAPI.h; sourceTree = "<group>"; };
+		C843772318741CF70006E1B6 /* P2MSGoogleMapAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = P2MSGoogleMapAPI.m; sourceTree = "<group>"; };
+		C8437725187448250006E1B6 /* P2MSOneMapAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = P2MSOneMapAPI.h; sourceTree = "<group>"; };
+		C8437726187448250006E1B6 /* P2MSOneMapAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = P2MSOneMapAPI.m; sourceTree = "<group>"; };
 		C86591C31872F135008FE04A /* P2MSMap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = P2MSMap.h; sourceTree = "<group>"; };
 		C86591C41872F25E008FE04A /* P2MSMapAPI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = P2MSMapAPI.h; sourceTree = "<group>"; };
 		C86591C51872F314008FE04A /* P2MSGoogleMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = P2MSGoogleMap.h; sourceTree = "<group>"; };
@@ -170,6 +186,8 @@
 		C86591D21873A85F008FE04A /* P2MSAppleMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = P2MSAppleMap.m; sourceTree = "<group>"; };
 		C86591D41873F018008FE04A /* Annotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Annotation.h; sourceTree = "<group>"; };
 		C86591D51873F018008FE04A /* Annotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Annotation.m; sourceTree = "<group>"; };
+		C86591D71873FC46008FE04A /* P2MSEsriMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = P2MSEsriMap.h; sourceTree = "<group>"; };
+		C86591D81873FC46008FE04A /* P2MSEsriMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = P2MSEsriMap.m; sourceTree = "<group>"; };
 		C86ED8E0182920EA00A3AF6D /* P2MSShadowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = P2MSShadowView.h; sourceTree = "<group>"; };
 		C86ED8E1182920EA00A3AF6D /* P2MSShadowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = P2MSShadowView.m; sourceTree = "<group>"; };
 		C86ED8E3182940BA00A3AF6D /* UIView+P2MSShadowCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+P2MSShadowCategory.h"; sourceTree = "<group>"; };
@@ -226,6 +244,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C8437713187405AD0006E1B6 /* Security.framework in Frameworks */,
+				C84377111874059B0006E1B6 /* MobileCoreServices.framework in Frameworks */,
+				C843770F187405750006E1B6 /* MediaPlayer.framework in Frameworks */,
 				C817B2A11843909E005709EA /* MapKit.framework in Frameworks */,
 				C8210F2717FC701E004CC812 /* SystemConfiguration.framework in Frameworks */,
 				C8210F2517FC7009004CC812 /* QuartzCore.framework in Frameworks */,
@@ -241,7 +262,7 @@
 				C8210F1117FC6F9E004CC812 /* AVFoundation.framework in Frameworks */,
 				C8E3A8AC17F33DA400630D0D /* CoreGraphics.framework in Frameworks */,
 				C8E3A8AE17F33DA400630D0D /* UIKit.framework in Frameworks */,
-				C81B7AF418421A8F009508DB /* GoogleMaps.framework in Frameworks */,
+				C84377211874184C0006E1B6 /* GoogleMaps.framework in Frameworks */,
 				C8E3A8AA17F33DA400630D0D /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -290,6 +311,12 @@
 				C86591C61872F314008FE04A /* P2MSGoogleMap.m */,
 				C86591D11873A85F008FE04A /* P2MSAppleMap.h */,
 				C86591D21873A85F008FE04A /* P2MSAppleMap.m */,
+				C86591D71873FC46008FE04A /* P2MSEsriMap.h */,
+				C86591D81873FC46008FE04A /* P2MSEsriMap.m */,
+				C843772218741CF70006E1B6 /* P2MSGoogleMapAPI.h */,
+				C843772318741CF70006E1B6 /* P2MSGoogleMapAPI.m */,
+				C8437725187448250006E1B6 /* P2MSOneMapAPI.h */,
+				C8437726187448250006E1B6 /* P2MSOneMapAPI.m */,
 			);
 			path = P2MSMap;
 			sourceTree = "<group>";
@@ -358,9 +385,14 @@
 		C8E3A8A817F33DA400630D0D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C84377201874184C0006E1B6 /* GoogleMaps.framework */,
+				C843771C187410360006E1B6 /* ArcGIS.bundle */,
+				C843771A187410170006E1B6 /* GoogleMaps.bundle */,
+				C8437712187405AD0006E1B6 /* Security.framework */,
+				C84377101874059B0006E1B6 /* MobileCoreServices.framework */,
+				C843770E187405750006E1B6 /* MediaPlayer.framework */,
 				C817B2A01843909E005709EA /* MapKit.framework */,
 				C81B7AF518421A9A009508DB /* GoogleMaps.bundle */,
-				C81B7AF318421A8F009508DB /* GoogleMaps.framework */,
 				C8210F2617FC701E004CC812 /* SystemConfiguration.framework */,
 				C8210F2417FC7009004CC812 /* QuartzCore.framework */,
 				C8210F2217FC7002004CC812 /* OpenGLES.framework */,
@@ -554,6 +586,7 @@
 				392739361820A0A8005BC7CF /* lrt_icon.png in Resources */,
 				39B09CEF1828848F0089080D /* no_icon@2x.png in Resources */,
 				C81AC01D1848FA9600275D2A /* current_located.png in Resources */,
+				C843771D187410360006E1B6 /* ArcGIS.bundle in Resources */,
 				C81EE712181E8BE600F5400A /* icon_arrow_compact_up.png in Resources */,
 				C8E3A8F417F3432B00630D0D /* README.md in Resources */,
 				C89A99A21800F3D300810E85 /* direction_icon.png in Resources */,
@@ -615,7 +648,10 @@
 				C8E3A8B617F33DA400630D0D /* main.m in Sources */,
 				C86ED8E2182920EA00A3AF6D /* P2MSShadowView.m in Sources */,
 				C86591CD1872F7E1008FE04A /* P2MSMapHelper.m in Sources */,
+				C8437727187448250006E1B6 /* P2MSOneMapAPI.m in Sources */,
 				C81B241118279D370068B552 /* P2MSActivityIndicator.m in Sources */,
+				C843772418741CF70006E1B6 /* P2MSGoogleMapAPI.m in Sources */,
+				C86591D91873FC46008FE04A /* P2MSEsriMap.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -731,15 +767,21 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/pyaephyoms/Desktop/P2MSRoutingView,
-					/Users/Khoongcw/Desktop/P2MSRoutingView,
 				);
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "P2MSRoutingView/P2MSRoutingView-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
 				INFOPLIST_FILE = "P2MSRoutingView/P2MSRoutingView-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				VALID_ARCHS = "armv7 armv7s";
+				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -753,15 +795,20 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/pyaephyoms/Desktop/P2MSRoutingView,
-					/Users/Khoongcw/Desktop/P2MSRoutingView,
 				);
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "P2MSRoutingView/P2MSRoutingView-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
 				INFOPLIST_FILE = "P2MSRoutingView/P2MSRoutingView-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				VALID_ARCHS = "armv7 armv7s";
+				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -14,10 +14,11 @@
 #import "UIView+P2MSShadowCategory.h"
 #import "P2MSSearchBar.h"
 #import "JSONKit.h"
-#import "Annotation.h"
-#import "P2MSUserTrackingButton.h"
 #import "P2MSGoogleMap.h"
 #import "P2MSAppleMap.h"
+#import "P2MSMapAPI.h"
+#import "P2MSGoogleMapAPI.h"
+
 
 @interface P2MSMapViewController (){
     UIView *mapView;
@@ -55,6 +56,7 @@
     NSInteger travel_mode_index;
     
     id<P2MSMap> mapObject;
+    id<P2MSMapAPI> mapAPIObject;
 }
 
 @end
@@ -71,6 +73,7 @@
         tableViewScrollEnable = YES;
         panViewType = PAN_VIEW_NONE;
         self.mapType = MAP_TYPE_GOOGLE;
+        self.mapAPISource = MAP_API_SOURCE_GOOGLE;
     }
     return self;
 }
@@ -92,7 +95,24 @@
             mapObject = [[P2MSAppleMap alloc]init];
         }break;
         default:{
+//#ifdef USE_GOOGLE
             mapObject = [[P2MSGoogleMap alloc]init];
+//#endif
+        }break;
+    }
+}
+
+- (void)setMapAPISource:(MAP_API_SOURCE)mapAPISource{
+    if (mapAPISource == _mapAPISource) {
+        return;
+    }
+    _mapAPISource = mapAPISource;
+    mapAPIObject = nil;
+    switch (mapAPISource) {
+        case MAP_API_SOURCE_NONE:
+            break;
+        default:{
+            mapAPIObject = [[P2MSGoogleMapAPI alloc]init];
         }break;
     }
 }
@@ -333,6 +353,7 @@
         routingVC.endLocDescription = [NSString stringWithFormat:@"%f,%f", geocodeResult.latLng.latitude, geocodeResult.latLng.longitude];
         routingVC.endAddress = geocodeResult.address;
     }
+    routingVC.mapAPIObject = mapAPIObject;
     routingVC.travel_mode_index = travel_mode_index;
     routingVC.delegate = self;
     [self presentModalViewController:routingVC animated:YES];
@@ -349,7 +370,7 @@
         return;
     }
     OneRoute *curRouteObject = [allRoutes objectAtIndex:lastPageIndex];
-    NSArray *polyLines = [P2MSMapHelper getLocationsFromPolyLineString:curRouteObject.overview_polyline];
+    NSArray *polyLines = [mapAPIObject decodePolyLine:curRouteObject.overview_polyline];
     if (currentRoute) {
         [mapObject removePolyLine:currentRoute];
         currentRoute = nil;
@@ -363,7 +384,7 @@
 - (void)routingViewWillClose:(P2MSRoutingViewController *)routingView withRoutes:(NSArray *)routes andSelectedIndex:(NSInteger)index{
     if (currentRoute) {
         if (_mapType == MAP_TYPE_GOOGLE) {
-            ((GMSPolyline *)currentRoute).map = nil;
+            [mapObject removePolyLine:currentRoute];
             currentRoute = nil;
         }else{
             
@@ -937,7 +958,7 @@
             [curRequest cancel];
             curRequest = nil;
         }
-        curRequest = [P2MSMapHelper geoDecodeAddress:strToGeocode withNetworkDelegate:self];
+        curRequest = [mapAPIObject geoDecodeAddress:strToGeocode withNetworkDelegate:self];
         if (curRequest) {
             receivedData = [NSMutableData data];
         }
@@ -1041,12 +1062,12 @@
 
 #pragma mark searchbar delegate
 - (void)p2msSearchDisplayControllerDidBeginSearch:(P2MSSearchDisplayViewController *)controller{
-    CGFloat origY = self.view.bounds.size.height - controller.searchResultsTableView.contentInset.bottom - 20;
-    [P2MSGlobalFunctions hidePoweredByGoogleLogo:NO inView:self.view forRect:CGRectMake(self.view.bounds.size.width - 109, origY, 104, 16)];
+    CGFloat origY = self.view.bounds.size.height - controller.searchResultsTableView.contentInset.bottom - 4;
+    [mapAPIObject showPoweredByLogo:YES InView:self.view atPoint:CGPointMake(self.view.bounds.size.width - 5, origY)];
 }
 
 - (void)p2msSearchDisplayControllerDidEndSearch:(P2MSSearchDisplayViewController *)controller{
-    [P2MSGlobalFunctions hidePoweredByGoogleLogo:YES inView:self.view forRect:CGRectZero];
+    [mapAPIObject showPoweredByLogo:NO InView:self.view atPoint:CGPointZero];
     if (geocodeResult.address){
         [self searchBarSetAddress:geocodeResult.address];
     }
@@ -1072,17 +1093,17 @@
 
 - (void)p2msSearchDisplayController:(P2MSSearchDisplayViewController *)controller keyboardWillShow:(BOOL)show WithHeight:(CGFloat)height{
     if (show) {
-        CGFloat origY = self.view.bounds.size.height - height- 20;
-        [P2MSGlobalFunctions movePoweredByGoogleLoginInView:self.view toPoint:CGPointMake(self.view.bounds.size.width-109, origY)];
+        CGFloat origY = self.view.bounds.size.height - height- 4;
+        [mapAPIObject movePoweredByLogoInView:self.view toPoint:CGPointMake(self.view.bounds.size.width-5, origY)];
     }else{
-        [P2MSGlobalFunctions movePoweredByGoogleLoginInView:self.view toPoint:CGPointMake(self.view.bounds.size.width-109, self.view.bounds.size.height - 20)];
+        [mapAPIObject movePoweredByLogoInView:self.view toPoint:CGPointMake(self.view.bounds.size.width-5, self.view.bounds.size.height-4)];
     }
 }
 
 - (void)queryPlaceAutoComplete:(NSString *)textToSearch{
     if ([searchController.searchBar.txtField.text isEqualToString:[self firstPartOfAddress:geocodeResult.address]])return;
     if (textToSearch.length && !curRequest) {
-        curRequest = [P2MSMapHelper getPlaceSuggestionsForQuery:textToSearch withCurLocation:[LocationManager sharedInstance].curLoc withDelegate:self];
+        curRequest = [mapAPIObject getPlaceSuggestionsForQuery:textToSearch withCurLocation:[LocationManager sharedInstance].curLoc withDelegate:self];
         if (curRequest) {
             receivedData = [NSMutableData data];
         }
@@ -1123,23 +1144,21 @@
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection{
-    NSDictionary *responseJSON = [receivedData objectFromJSONData];
-    NSString *statusString = [responseJSON objectForKey:@"status"];
-    if ([statusString isEqualToString:@"OK"]){
+    id responseJSON = [receivedData objectFromJSONData];
+    if ([mapAPIObject isResponseOK:responseJSON]) {
         if ([[curRequest.userInfo objectForKey:@"req_type"] isEqualToString:@"geocode"]) {
             [self removePannedInfoViewAnimate:NO];
             geocodeResult = nil;
             panViewType = PAN_VIEW_SEARCH;
-            geocodeResult = [P2MSMapHelper googleMapGeocode:[responseJSON objectForKey:@"results"]];
+            geocodeResult = [mapAPIObject mapGeocode:responseJSON];
             [self createEndMarkerForCoordinate:geocodeResult.latLng];
             [self setMapViewNorthEast:geocodeResult.northeast andSouthWest:geocodeResult.southwest withEdgeInset:UIEdgeInsetsMake(50, 15, 0, 15) willhighLightNE:NO];
             [self populatePannedViewAnimated:YES];
-
+            
             [self searchBarSetAddress:geocodeResult.address];
         }else{
             allSuggestions = nil;
-            allSuggestions = [P2MSMapHelper parseSuggestions:[responseJSON objectForKey:@"predictions"]];
-            
+            allSuggestions = [mapAPIObject parsePlacesSuggestions:responseJSON];
             if (nextTextToSearch) {
                 [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(nextSearch) object:nil];
                 [self performSelector:@selector(nextSearch) withObject:nil afterDelay:0.1];
@@ -1147,11 +1166,7 @@
         }
     }else{
         allRoutes = nil;
-        if ([statusString isEqualToString:@"NOT_FOUND"] || [statusString isEqualToString:@"ZERO_RESULTS"]) {
-        }else{
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Google Map" message:statusString delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
-        }
+        [mapAPIObject displayMessageForResponse:responseJSON];
     }
     curRequest = nil;
     [searchController.searchResultsTableView reloadData];
@@ -1215,4 +1230,6 @@
 }
 
 
+
 @end
+

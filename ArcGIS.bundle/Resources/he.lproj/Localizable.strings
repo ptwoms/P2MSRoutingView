@@ -1,0 +1,173 @@
+/**/
+"Cancel" = "ביטול";
+/**/
+"Delete" = "מחיקה";
+/**/
+"Open" = "פתח";
+/**/
+"Edit" = "עריכה";
+/**/
+"Yes" = "כן";
+
+/*Geometry Edit Action Name*/
+"Apply Geometry" = "החל גיאומטריה";
+/*Geometry Edit Action Name*/
+"Clear Geometry" = "נקה גיאומטריה";
+/*Geometry Edit Action Name*/
+"Delete Vertex" = "מחק נקודת מפנה";
+/*Geometry Edit Action Name*/
+"Insert Part" = "הכנס חלק";
+/*Geometry Edit Action Name*/
+"Insert Vertex" = "הוסף נקודת מפנה";
+/*Geometry Edit Action Name*/
+"Move Vertex" = "הזז נקודת מפנה";
+/*Geometry Edit Action Name*/
+"Remove Part" = "הסר חלק";
+
+/*Collecting attachments*/
+"Add" = "הוסף";
+/*Collecting attachments*/
+"Take Photo or Video" = "צלם תמונה או וידאו";
+/*Collecting attachments*/
+"Choose From Library" = "בחר מספריה";
+/*Collecting attachments*/
+"Photo" = "תמונה";
+/*Collecting attachments*/
+"Video" = "וידאו";
+/*Collecting attachments*/
+"Save To Photo Library" = "שמור לספריית תמונות";
+/*Collecting attachments*/
+"Download" = "הורדה";
+
+/*Date attribute*/
+"Today" = "היום";
+
+/**/
+"Attachments" = "קבצים מקושרים";
+"Attributes" = "מאפיינים";
+
+/**/
+"Open in Safari" = "פתח בספארי";
+
+/* Please enter a numeric value between 0 and 5.*/
+"Enter a number between %i and %i." = "הכנס מספר בין %i לבין %i.";
+
+/* Please enter a numeric value between 0.5 and 5.0.*/
+"Enter a number between %f and %f." = "הכנס מספר בין %f לבין %f.";
+
+/* string length error, when user enters too many characters in string attribute editor:
+  Too many characters.  Current: 512.  Allowed: 256 */
+"Too many characters (%@)" = "יותר מדי תווים  (%@)";
+
+/* When a number is entered outside the range */
+"Number is outside the acceptable range." = "המספר מחוץ לטווח המותר.";
+
+/* BLOB, RASTER, etc */
+"Field type not supported" = "סוג השדה אינו נתמך";
+
+/**/
+"%d of %d" = "%d מתוך %d";
+
+/**/
+"Changing Feature Type" = "משנה את סוג הישות";
+"You are changing the feature type, which may potentially overwrite some field values. Are you sure you want to do this?" =  "הינך משנה את סוג הישות, וזה עשוי לשנות ערכים בשדות. האם אתה בטוח שברצונך לבצע זאת?";
+
+/**/
+"Data for pie chart is invalid" = "הנתונים עבור תרשים העוגה שגויים";
+"No data to create a pie chart" = "אין נתונים ליצירת תרשים עוגה";
+
+/**/
+"Created by %@ seconds ago" = "נוצר על ידי %@ לפני מספר שניות";
+
+/**/
+"Created by %@ a minute ago" = "נוצר על ידי %@ לפני דקה";
+
+/**/
+"Edited by %@ seconds ago" = "נערך על ידי %@ לפני מספר שניות";
+
+/**/
+"Edited by %@ a minute ago" = "נערך על ידי %@ a לפני דקה";
+
+/**/
+"Created seconds ago" = "נוצר לפני מספר שניות";
+
+/**/
+"Created a minute ago" = "נוצר לפני דקה";
+
+/**/
+"Edited seconds ago" = "נערך לפני מספר שניות";
+
+/**/
+"Edited a minute ago" = "נערך לפני דקה";
+
+/**/
+"Created by %@ %d minutes ago" = "נוצר על ידי  %@ לפני %d שניות";
+
+/**/
+"Created by %@ an hour ago" = "נוצר על ידי  %@ לפני כשעה";
+
+/**/
+"Created by %@ %d hours ago" = "נוצר על ידי  %@ לפני %d  שעות";
+
+/*"Created by %@ on ${weekDay} at ${formattedTime}"*/
+"Created by %@ on %@ at %@ - day" = "נוצר על ידי %@ בתאריך %@ ב- %@";
+
+/*"Created by %@ on ${formattedDate} at ${formattedTime}"*/
+"Created by %@ on %@ at %@ - full" = "נוצר על ידי %@ בתאריך %@ ב- %@";
+
+/**/
+"Edited by %@ %d minutes ago" = "נערך על ידי  %@ לפני %d דקות";
+
+/**/
+"Edited by %@ an hour ago" = "נערך על ידי  %@ לפני כשעה";
+
+/**/
+"Edited by %@ %d hours ago" = "נערך על ידי  %@ לפני %d שעות";
+
+/**/
+"Edited by %@ on %@ at %@ - day" = "נערך על ידי %@ בתאריך %@ ב- %@";
+
+/**/
+"Edited by %@ on %@ at %@ - full" = "נערך על ידי %@ בתאריך %@ ב- %@";
+
+/**/
+"Created by %@" = "נוצר על ידי  %@";
+
+/**/
+"Edited by %@" = "נערך על ידי  %@";
+
+/**/
+"Created %d minutes ago" = "נוצר לפני %d דקות";
+
+/**/
+"Created an hour ago" = "נוצר לפני כשעה";
+
+/**/
+"Created %d hours ago" = "נוצר לפני %d שעות";
+
+/*"Created on ${weekDay} at ${formattedTime}"*/
+"Created on %@ at %@ - day" = "נוצר בתאריך  %@ ב- %@";
+
+/*"Created on ${formattedDate} at ${formattedTime}"*/
+"Created on %@ at %@ - full" = "נוצר בתאריך  %@ ב- %@";
+
+/**/
+"Edited %d minutes ago" = "נערך לפני %d דקות";
+
+/**/
+"Edited an hour ago" = "נערך לפני כשעה";
+
+/**/
+"Edited %d hours ago" = "נערך לפני %d שעות";
+
+/*"Edited on ${weekDay} at ${formattedTime}"*/
+"Edited on %@ at %@ - day" = "נערך בתאריך  %@ ב- %@";
+
+/*"Edited on ${formattedDate} at ${formattedTime}"*/
+"Edited on %@ at %@ - full" = "נערך בתאריך  %@ ב- %@";
+
+/* Used to denote a required field */
+"Required" = "דרוש";
+
+/* Used for naming layers with no names */
+"Layer %d" = "שכבה %d";

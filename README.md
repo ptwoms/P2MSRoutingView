@@ -25,7 +25,14 @@ Loading mapView with predefined Place Name and Coordinate
     
     [mapViewC setDefaultLocation:@"Shop Name, #xx-xx, Clementi Shopping Mall,\n Singapore" withCoordinate:CLLocationCoordinate2DMake(1.315047,103.764752)];
     
-    mapViewC.mapType = MAP_TYPE_GOOGLE;// MAP_TYPE_GOOGLE (default), MAP_TYPE_APPLE
+    mapViewC.mapType = MAP_TYPE_GOOGLE;
+    // - MAP_TYPE_GOOGLE (default)
+    // - MAP_TYPE_APPLE
+    // - MAP_TYPE_ESRI (haven't implemented)
+    
+    mapViewC.mapAPISource = MAP_API_SOURCE_GOOGLE;
+    //  - MAP_API_SOURCE_GOOGLE (default), 
+    //  - MAP_API_SOURCE_ONE_MAP (haven't implemented)
     
 
 will result in

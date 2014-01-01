@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <GoogleMaps/GoogleMaps.h>
 #import "P2MSRoutingViewController.h"
 #import "P2MSMapHelper.h"
 #import "P2MSSearchDisplayViewController.h"
@@ -27,12 +26,19 @@ typedef enum {
 typedef enum {
     MAP_TYPE_NONE,
     MAP_TYPE_APPLE,
-    MAP_TYPE_GOOGLE
+    MAP_TYPE_GOOGLE,
+    MAP_TYPE_ESRI
 }MAP_TYPE;
 
-@interface P2MSMapViewController : UIViewController<GMSMapViewDelegate, P2MSRoutingViewControllerDelegate, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, NSURLConnectionDelegate, P2MSSearchDisplayViewControllerDelegate, P2MSSearchBarDelegate, MKMapViewDelegate>
+typedef enum {
+    MAP_API_SOURCE_NONE,
+    MAP_API_SOURCE_GOOGLE
+}MAP_API_SOURCE;
+
+@interface P2MSMapViewController : UIViewController<P2MSRoutingViewControllerDelegate, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, NSURLConnectionDelegate, P2MSSearchDisplayViewControllerDelegate, P2MSSearchBarDelegate, MKMapViewDelegate>
 
 @property (nonatomic) MAP_TYPE mapType;
+@property (nonatomic) MAP_API_SOURCE mapAPISource;
 
 - (void)setDefaultLocation:(NSString *)locNameToGo withCoordinate:(CLLocationCoordinate2D)locToGo;
 

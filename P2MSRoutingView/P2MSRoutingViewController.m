@@ -162,8 +162,8 @@
     routeBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     [routeBtn addTarget:self action:@selector(doRouting:) forControlEvents:UIControlEventTouchUpInside];
     [toolbar addSubview:routeBtn];
-
-    [P2MSGlobalFunctions hidePoweredByGoogleLogo:NO inView:self.view forRect:CGRectMake(self.view.bounds.size.width - 109, self.view.bounds.size.height - 20, 104, 16)];
+    
+    [_mapAPIObject showPoweredByLogo:YES InView:self.view atPoint:CGPointMake(self.view.bounds.size.width - 5, self.view.bounds.size.height-4)];
 }
 
 - (IBAction)closeRoutingView:(id)sender{
@@ -311,7 +311,7 @@
 
 - (void)queryAutoComplete:(NSString *)textToSearch{
     if (textToSearch.length >= 2 && !curRequest) {
-        curRequest = [P2MSMapHelper getLocationSuggestionsForQuery:textToSearch withCurLocation:[LocationManager sharedInstance].curLoc withDelegate:self];
+        curRequest = [_mapAPIObject getLocationSuggestionsForQuery:textToSearch withCurLocation:[LocationManager sharedInstance].curLoc withDelegate:self];
         if (curRequest) {
             receivedData = [NSMutableData data];
         }
@@ -362,7 +362,7 @@
 }
 
 - (void)routeRequest{
-    curRequest = [P2MSMapHelper getDirectionFromLocation:_startLocDescription to:_endLocDescription  forTravelMode:curTravelMode alternatives:YES withNetworkDelegate:self];
+    curRequest = [_mapAPIObject getDirectionFromLocation:_startLocDescription to:_endLocDescription  forTravelMode:curTravelMode alternatives:YES withNetworkDelegate:self];
     if (curRequest) {
         cell_type_to_display = TBL_LOADING_CELL;
         [suggestionView reloadData];
@@ -392,12 +392,11 @@
     curRequest = nil;
     P2MSNetworkRequest *con = (P2MSNetworkRequest *)connection;
     NSDictionary *responseJSON = [receivedData objectFromJSONData];
+    
     if ([[con.userInfo objectForKey:@"req_type"] isEqualToString:@"direction"]) {
-        NSString *statusString = [responseJSON objectForKey:@"status"];
         cell_type_to_display = TBL_DIRECTION_CELL;
-
-        if ([statusString isEqualToString:@"OK"]){
-            NSArray *arr = [P2MSMapHelper parseGoogleDirections:[responseJSON objectForKey:@"routes"] forTravelMode:[con.userInfo objectForKey:@"travel_mode"]];
+        if ([_mapAPIObject isResponseOK:responseJSON]){
+            NSArray *arr = [_mapAPIObject parseDirections:responseJSON forTravelMode:[con.userInfo objectForKey:@"travel_mode"]];
             locSuggestions = nil;
             allRoutes = arr;
             if ([startTextField isFirstResponder]) {
@@ -407,16 +406,12 @@
             }
         }else{
             allRoutes = nil;
-            if ([statusString isEqualToString:@"NOT_FOUND"] || [statusString isEqualToString:@"ZERO_RESULTS"]) {
-            }else{
-                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Google Map" message:statusString delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                [alert show];
-            }
+            [_mapAPIObject displayMessageForResponse:responseJSON];
         }
         [suggestionView reloadData];
     }else{
-        if ([[responseJSON objectForKey:@"status"] isEqualToString:@"OK"]){
-            locSuggestions = [P2MSMapHelper parseSuggestions:[responseJSON objectForKey:@"predictions"]];
+        if ([_mapAPIObject isResponseOK:responseJSON]){
+            locSuggestions = [_mapAPIObject parseLocationSuggestions:responseJSON];
             if ([startTextField.text caseInsensitiveCompare:@"Current Location"] != NSOrderedSame && [endTextField.text caseInsensitiveCompare:@"Current Location"] != NSOrderedSame) {
                 LocationSuggestion *curLoc = [[LocationSuggestion alloc]init];
                 curLoc.name = @"Current Location";
@@ -425,7 +420,6 @@
             }
             cell_type_to_display = TBL_SUGGESTION_CELL;
             [suggestionView reloadData];
-        }else{
         }
         if (nextTextToSearch) {
             [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(nextSearch) object:nil];
@@ -613,14 +607,14 @@
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbHeight, 0.0);
     suggestionView.contentInset = contentInsets;
     suggestionView.scrollIndicatorInsets = contentInsets;
-    [P2MSGlobalFunctions movePoweredByGoogleLoginInView:self.view toPoint:CGPointMake(self.view.bounds.size.width - 109, self.view.bounds.size.height - kbHeight - 20)];
+    [_mapAPIObject movePoweredByLogoInView:self.view toPoint:CGPointMake(self.view.bounds.size.width - 5, self.view.bounds.size.height - kbHeight - 4)];
 }
 
 -(void) keyboardWillHide:(NSNotification *)aNotification{
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
     suggestionView.contentInset = contentInsets;
     suggestionView.scrollIndicatorInsets = contentInsets;
-    [P2MSGlobalFunctions movePoweredByGoogleLoginInView:self.view toPoint:CGPointMake(self.view.bounds.size.width - 109, self.view.bounds.size.height - 20)];
+    [_mapAPIObject movePoweredByLogoInView:self.view toPoint:CGPointMake(self.view.bounds.size.width - 5, self.view.bounds.size.height - 4)];
 }
 
 

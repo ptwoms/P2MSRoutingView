@@ -8,8 +8,18 @@
 
 #import "P2MSGoogleMap.h"
 
+//#ifdef USE_GOOGLE
+
 @implementation P2MSGoogleMap
 @synthesize mapView;
+
+- (id)init{
+    self = [super init];
+    if (self) {
+            [GMSServices provideAPIKey:GOOGLEMAP_IOS_KEY];
+    }
+    return self;
+}
 
 - (id)createMapViewForRect:(CGRect)rect withDefaultLocation:(CLLocationCoordinate2D)defaultLocation andZoomLevel:(CGFloat)zoomLevel inView:(UIView *)parentView{
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:defaultLocation.latitude longitude:defaultLocation.longitude zoom:zoomLevel];
@@ -74,7 +84,6 @@
     [route setStrokeWidth:5.0f];
     ((GMSPolyline *)route).map = (GMSMapView *)mapView;
     return route;
-    return nil;
 }
 
 - (void)removePolyLine:(id)polyLine{
@@ -82,3 +91,5 @@
 }
 
 @end
+
+//#endif
