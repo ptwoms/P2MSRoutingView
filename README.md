@@ -5,6 +5,20 @@ This project is inspired by Google Map application for IOS.
 
 This is supposed to work on IOS 5+. 
 
+Supported Maps:
+
+ - Apple built-in Map (MapKit)
+ - Google Map (Google Map SDK for IOS)
+ - ESRI Map (ArcGIS Runtime SDK for IOS) -- ***coming soon***
+
+
+<small>*GoogleMaps.framework and ArcGIS.framework cannot live together and it is required to use either one in the project.*</small>
+
+Map APIs
+
+- Google Map REST API
+- OneMap REST API *(Singapore only)* -- ***coming soon***
+
 Please be sure that [Google Maps SDK for IOS](https://developers.google.com/maps/documentation/ios/index) and [Google Places API](https://developers.google.com/places/documentation/) services are enabled in [Google Developer Console](https://code.google.com/apis/console) and API keys are generated properly.
 
 *Follows the steps described in Google Map SDK for IOS [Getting Started](https://developers.google.com/maps/documentation/ios/start) guide to set up the new project*
