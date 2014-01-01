@@ -15,7 +15,8 @@
     self=[super init];
     if(self){
         coordinate =cor;
-        _type = 'p'; // 'p' = pin , 'g' = green pin, 'b' = blue pin
+        _imageName = @"GoogleMaps.bundle/default_marker.png";
+        _anchorPoint = CGPointMake(0, -19);
     }
     return self;
 }

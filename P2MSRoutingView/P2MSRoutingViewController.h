@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
-#import "P2MSGoogleMapHelper.h"
+#import "P2MSMapHelper.h"
 
 typedef enum {
     TBL_CELL_NONE,

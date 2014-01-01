@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <GoogleMaps/GoogleMaps.h>
 #import "P2MSRoutingViewController.h"
-#import "P2MSGoogleMapHelper.h"
+#import "P2MSMapHelper.h"
 #import "P2MSSearchDisplayViewController.h"
 #import <MapKit/MapKit.h>
 
@@ -25,6 +25,7 @@ typedef enum {
 }PAN_VIEW_TYPE;
 
 typedef enum {
+    MAP_TYPE_NONE,
     MAP_TYPE_APPLE,
     MAP_TYPE_GOOGLE
 }MAP_TYPE;

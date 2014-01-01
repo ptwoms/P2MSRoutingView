@@ -1,12 +1,12 @@
 //
-//  P2MSGoogleMapHelper.m
+//  P2MSMapHelper.m
 //  P2MSRoutingView
 //
 //  Created by PYAE PHYO MYINT SOE on 29/10/13.
 //  Copyright (c) 2013 PYAE PHYO MYINT SOE. All rights reserved.
 //
 
-#import "P2MSGoogleMapHelper.h"
+#import "P2MSMapHelper.h"
 
 @implementation LocationSuggestion
 @end
@@ -20,14 +20,14 @@
 @implementation TransitTravelStep
 @end
 
-@implementation GeocodeResult
+@implementation P2MSLocationInfo
 @end
 
 @implementation DriveTravelStep
 @end
 
 
-@implementation P2MSGoogleMapHelper
+@implementation P2MSMapHelper
 
 
 + (P2MSNetworkRequest *)getLocationSuggestionsForQuery:(NSString *)queryString withCurLocation:(CLLocationCoordinate2D)curLoc withDelegate:(id<NSURLConnectionDelegate>)delegate{
@@ -134,7 +134,7 @@
         oneRoute.endLoc = CLLocationCoordinate2DMake([[tempDict valueForKey:@"lat"]floatValue], [[tempDict valueForKey:@"lng"]floatValue]);
 
         NSMutableArray *toArray = [NSMutableArray array];
-        [P2MSGoogleMapHelper convertSteps:&toArray fromSteps:[legs objectForKey:@"steps"] withLevel:0 withMainRoute:&oneRoute];
+        [P2MSMapHelper convertSteps:&toArray fromSteps:[legs objectForKey:@"steps"] withLevel:0 withMainRoute:&oneRoute];
         if ([travel_mode isEqualToString:@"transit"]) {
             NSString *departureTime = [[legs objectForKey:@"departure_time"]objectForKey:@"text"];
             NSString *arrivalTime = [[legs objectForKey:@"arrival_time"]objectForKey:@"text"];
@@ -277,12 +277,12 @@
     return array;
 }
 
-+ (GeocodeResult *)googleMapGeocode:(NSArray *)results{
++ (P2MSLocationInfo *)googleMapGeocode:(NSArray *)results{
     if (!results.count) {
         return nil;
     }
     NSDictionary *firstResult = [results objectAtIndex:0];
-    GeocodeResult *geoResult = [GeocodeResult new];
+    P2MSLocationInfo *geoResult = [P2MSLocationInfo new];
     geoResult.address = [firstResult objectForKey:@"formatted_address"];
     NSDictionary *geoDict = [firstResult objectForKey:@"geometry"];
     NSDictionary *locDict = [geoDict objectForKey:@"location"];

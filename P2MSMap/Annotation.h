@@ -13,7 +13,9 @@
 }
 
 @property (nonatomic) CLLocationCoordinate2D coordinate;
-@property (nonatomic) char type;
+@property (nonatomic,retain) NSString *imageName;
+@property (nonatomic) CGPoint anchorPoint;
+//@property (nonatomic) char type;
 
 -(id) initWithCoordinate:(CLLocationCoordinate2D) coordinate;
 

@@ -1,5 +1,5 @@
 //
-//  P2MSGoogleMapHelper.h
+//  P2MSMapHelper.h
 //  P2MSRoutingView
 //
 //  Created by PYAE PHYO MYINT SOE on 29/10/13.
@@ -11,13 +11,14 @@
 #import "P2MSNetworkRequest.h"
 
 
-//#warning Provide your own API Access Keys
+#warning Provide your own API Access Keys
 //can be same key
 #define GOOGLEMAP_IOS_KEY @"" //Key for iOS apps
 #define GOOGLEMAP_API_KEY @"" //Key for API Access authenticaition
 
 #define MAP_DISTANCE_EPSILON 0.00005f
 
+#pragma mark set your own default location here
 //Default center location set to Pathein, Myanmar
 //This is used when locToGo is not provided.
 #define DEFAULT_LOCATION CLLocationCoordinate2DMake(16.815058, 94.700432)
@@ -70,7 +71,7 @@ typedef enum {
 
 @end
 
-@interface GeocodeResult : NSObject
+@interface P2MSLocationInfo : NSObject
 
 @property (nonatomic, retain) NSString *address;
 @property (nonatomic) CLLocationCoordinate2D latLng;
@@ -84,7 +85,7 @@ typedef enum {
 @end
 
 
-@interface P2MSGoogleMapHelper : NSObject
+@interface P2MSMapHelper : NSObject
 
 + (P2MSNetworkRequest *)getLocationSuggestionsForQuery:(NSString *)queryString withCurLocation:(CLLocationCoordinate2D)curLoc withDelegate:(id<NSURLConnectionDelegate>)delegate;
 + (NSArray *)parseSuggestions:(NSArray *)jsonData;
@@ -99,7 +100,7 @@ typedef enum {
 
 + (P2MSNetworkRequest *) geoDecodeAddress:(NSString *)addressToDecode withNetworkDelegate:(id<NSURLConnectionDelegate>) delegate;
 
-+ (GeocodeResult *)googleMapGeocode:(NSArray *)results;
++ (P2MSLocationInfo *)googleMapGeocode:(NSArray *)results;
 
 
 @end

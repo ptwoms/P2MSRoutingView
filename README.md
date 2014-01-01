@@ -14,7 +14,7 @@ Please carefully read  the [usage limits](https://developers.google.com/places/p
 >Everyone is invited to contribute to improve and add more features to this library
 
 ## Usage
-Add the Google API Keys in "P2MSGoogleMapHelper.h" before running this sample.
+Add the Google API Keys in "P2MSMapHelper.h" before running this sample.
 
 	#define GOOGLEMAP_IOS_KEY @"add_your_key_here" //Key for iOS apps
 	#define GOOGLEMAP_API_KEY @"add_your_key_here" //Key for API Access authenticaition

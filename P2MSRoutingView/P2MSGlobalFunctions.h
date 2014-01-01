@@ -26,8 +26,6 @@ return shared##classname;                           \
 
 #define LAST_USED_DIRECTION_TYPE @"p2ms_routing_direction_type"
 
-#define METERS_PER_MILE 1609.344
-
 @interface P2MSGlobalFunctions : NSObject<UITextFieldDelegate>
 
 @property (nonatomic, readonly) BOOL isIPad;

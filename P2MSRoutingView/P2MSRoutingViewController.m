@@ -7,7 +7,7 @@
 //
 
 #import "P2MSRoutingViewController.h"
-#import "P2MSGoogleMapHelper.h"
+#import "P2MSMapHelper.h"
 #import "P2MSGlobalFunctions.h"
 #import "LocationManager.h"
 #import "JSONKit.h"
@@ -311,7 +311,7 @@
 
 - (void)queryAutoComplete:(NSString *)textToSearch{
     if (textToSearch.length >= 2 && !curRequest) {
-        curRequest = [P2MSGoogleMapHelper getLocationSuggestionsForQuery:textToSearch withCurLocation:[LocationManager sharedInstance].curLoc withDelegate:self];
+        curRequest = [P2MSMapHelper getLocationSuggestionsForQuery:textToSearch withCurLocation:[LocationManager sharedInstance].curLoc withDelegate:self];
         if (curRequest) {
             receivedData = [NSMutableData data];
         }
@@ -362,7 +362,7 @@
 }
 
 - (void)routeRequest{
-    curRequest = [P2MSGoogleMapHelper getDirectionFromLocation:_startLocDescription to:_endLocDescription  forTravelMode:curTravelMode alternatives:YES withNetworkDelegate:self];
+    curRequest = [P2MSMapHelper getDirectionFromLocation:_startLocDescription to:_endLocDescription  forTravelMode:curTravelMode alternatives:YES withNetworkDelegate:self];
     if (curRequest) {
         cell_type_to_display = TBL_LOADING_CELL;
         [suggestionView reloadData];
@@ -397,7 +397,7 @@
         cell_type_to_display = TBL_DIRECTION_CELL;
 
         if ([statusString isEqualToString:@"OK"]){
-            NSArray *arr = [P2MSGoogleMapHelper parseGoogleDirections:[responseJSON objectForKey:@"routes"] forTravelMode:[con.userInfo objectForKey:@"travel_mode"]];
+            NSArray *arr = [P2MSMapHelper parseGoogleDirections:[responseJSON objectForKey:@"routes"] forTravelMode:[con.userInfo objectForKey:@"travel_mode"]];
             locSuggestions = nil;
             allRoutes = arr;
             if ([startTextField isFirstResponder]) {
@@ -416,7 +416,7 @@
         [suggestionView reloadData];
     }else{
         if ([[responseJSON objectForKey:@"status"] isEqualToString:@"OK"]){
-            locSuggestions = [P2MSGoogleMapHelper parseSuggestions:[responseJSON objectForKey:@"predictions"]];
+            locSuggestions = [P2MSMapHelper parseSuggestions:[responseJSON objectForKey:@"predictions"]];
             if ([startTextField.text caseInsensitiveCompare:@"Current Location"] != NSOrderedSame && [endTextField.text caseInsensitiveCompare:@"Current Location"] != NSOrderedSame) {
                 LocationSuggestion *curLoc = [[LocationSuggestion alloc]init];
                 curLoc.name = @"Current Location";

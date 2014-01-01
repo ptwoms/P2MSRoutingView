@@ -16,12 +16,12 @@
 #import "JSONKit.h"
 #import "Annotation.h"
 #import "P2MSUserTrackingButton.h"
+#import "P2MSGoogleMap.h"
+#import "P2MSAppleMap.h"
 
 @interface P2MSMapViewController (){
     UIView *mapView;
     id currentRoute;
-    MKPolylineView *applePolyLineView;
-    
     NSArray *allRoutes;
     id endMarker;
     id positionIndicator, positionIndicatorEnd;
@@ -45,7 +45,7 @@
     P2MSNetworkRequest *curRequest;
     NSString *nextTextToSearch;
     NSMutableData *receivedData;
-    GeocodeResult *geocodeResult;
+    P2MSLocationInfo *geocodeResult;
     BOOL statusBarHidden;
     
     PAN_VIEW_TYPE panViewType;
@@ -53,10 +53,9 @@
     UIView *routeView;
     NSString *startAddress, *endAddress, *startLocDescription, *endLocDescription;
     NSInteger travel_mode_index;
+    
+    id<P2MSMap> mapObject;
 }
-
-//@property (nonatomic, retain) NSString *locationNameToGo;
-//@property (nonatomic) CLLocationCoordinate2D locToGo;
 
 @end
 
@@ -71,14 +70,36 @@
         isGestureRecognizerOverlapped = NO;
         tableViewScrollEnable = YES;
         panViewType = PAN_VIEW_NONE;
-        _mapType = MAP_TYPE_GOOGLE;
+        self.mapType = MAP_TYPE_GOOGLE;
     }
     return self;
 }
 
+- (void)setMapType:(MAP_TYPE)mapType{
+    if (mapType == _mapType) {
+        return;
+    }
+    if (mapType == MAP_TYPE_GOOGLE && ![P2MSGlobalFunctions sharedInstance].isIOS_5_OR_LATER) {
+        mapType = MAP_TYPE_APPLE;
+    }
+    _mapType = mapType;
+    [mapObject removeMap];
+    mapView = nil;
+    mapObject = nil;
+
+    switch (mapType) {
+        case MAP_TYPE_APPLE:{
+            mapObject = [[P2MSAppleMap alloc]init];
+        }break;
+        default:{
+            mapObject = [[P2MSGoogleMap alloc]init];
+        }break;
+    }
+}
+
 - (void)setDefaultLocation:(NSString *)locNameToGo withCoordinate:(CLLocationCoordinate2D)locToGo{
     if (!geocodeResult) {
-        geocodeResult = [[GeocodeResult alloc]init];
+        geocodeResult = [[P2MSLocationInfo alloc]init];
     }
     geocodeResult.address = (locNameToGo)?locNameToGo:[NSString stringWithFormat:@"%f,%f", locToGo.latitude, locToGo.longitude];
     geocodeResult.latLng = locToGo;
@@ -164,10 +185,6 @@
     allRoutes = nil;
     lastPageIndex = -1;
     
-    if (_mapType == MAP_TYPE_GOOGLE && ![P2MSGlobalFunctions sharedInstance].isIOS_5_OR_LATER) {
-        _mapType = MAP_TYPE_APPLE;
-    }
-    
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
         self.edgesForExtendedLayout = UIRectEdgeNone;
     
@@ -197,75 +214,33 @@
     CLLocationCoordinate2D locToDisplay;
     
     //use the category provided in http://troybrant.net/blog/2010/01/set-the-zoom-level-of-an-mkmapview/, if you want to set the same zoom level for MapKit as Google
-    CGFloat mapKitZoom = 0.8, googlMapZoom = 15;
+    CGFloat zoomLevel;
     if (CLLocationCoordinate2DIsValid(geocodeResult.latLng)) {
         locToDisplay = geocodeResult.latLng;
+        zoomLevel = (_mapType == MAP_TYPE_GOOGLE)?15:0.8;
     }else{
         locToDisplay = DEFAULT_LOCATION;
-        mapKitZoom = 9000;
-        googlMapZoom = 2;
+        zoomLevel = (_mapType == MAP_TYPE_GOOGLE)?2:9000;
     }
-    if (_mapType == MAP_TYPE_GOOGLE) {
-        GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:locToDisplay.latitude longitude:locToDisplay.longitude zoom:googlMapZoom];
-        mapView = [GMSMapView mapWithFrame:self.view.bounds camera:camera];
-        GMSMapView *googleMapView = (GMSMapView *)mapView;
-        googleMapView.myLocationEnabled = YES;
-        googleMapView.delegate = self;
-        googleMapView.settings.myLocationButton = YES;
-        [self.view addSubview:googleMapView];
-    }else{
-        mapView = [[MKMapView alloc]initWithFrame:self.view.bounds];
-        MKMapView *appleMapView = (MKMapView *)mapView;
-        ((MKMapView *)mapView).showsUserLocation = YES;
-        ((MKMapView *)mapView).delegate = self;
-        MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(locToDisplay, mapKitZoom*METERS_PER_MILE, mapKitZoom*METERS_PER_MILE);
-        [appleMapView setRegion:viewRegion animated:YES];
-        [self.view addSubview:mapView];
-        
-        P2MSUserTrackingButton *trackBtn = [[P2MSUserTrackingButton alloc]initWithMapView:(MKMapView *)mapView andFrame:CGRectMake(self.view.bounds.size.width-40, self.view.bounds.size.height-50, 30, 30)];
-        [mapView addSubview:trackBtn];
-        
-    }
+    mapView = [mapObject createMapViewForRect:self.view.bounds withDefaultLocation:locToDisplay andZoomLevel:zoomLevel inView:self.view];
     mapView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self createEndMarkerForCoordinate:geocodeResult.latLng];
 }
 
 - (void)centerMapToLatLng:(CLLocationCoordinate2D)loc showPin:(BOOL)show{
-    if (_mapType == MAP_TYPE_GOOGLE) {
-        GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:loc.latitude longitude:loc.longitude zoom:15];
-        ((GMSMapView *)mapView).camera = camera;
-        if (show) {
-            if (!positionIndicator) {
-                positionIndicator = [GMSMarker markerWithPosition:loc];
-                [((GMSMarker *)positionIndicator) setIcon:[UIImage imageNamed:@"pin_green"]];
-                ((GMSMarker *)positionIndicator).groundAnchor = CGPointMake(0.5, 1);
-                [positionIndicator setMap:(GMSMapView *)mapView];
-            }else{
-                ((GMSMarker *)positionIndicator).position = loc;
-            }
-        }else if(positionIndicator){
-            ((GMSMarker *)positionIndicator).map = nil;
-            positionIndicator = nil;
-        }
-        if (positionIndicatorEnd) {
-            ((GMSMarker *)positionIndicatorEnd).map = nil;
-            positionIndicatorEnd = nil;
-        }
-    }else{
-        MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(loc, 0.8*METERS_PER_MILE, 0.8*METERS_PER_MILE);
-        [(MKMapView *)mapView setRegion:viewRegion animated:YES];
-        if (show) {
-            if (positionIndicator) {
-                ((Annotation *)positionIndicator).coordinate = loc;
-            }else{
-                positionIndicator =[[Annotation alloc] initWithCoordinate:loc];
-                ((Annotation *)positionIndicator).type = 'g';
-                [(MKMapView *)mapView addAnnotation:positionIndicator];
-            }
-        }else if(positionIndicator){
-            [(MKMapView *)mapView removeAnnotation:positionIndicator];positionIndicator = nil;
-        }
-        [(MKMapView *)mapView removeAnnotation:positionIndicatorEnd];positionIndicatorEnd = nil;
+    [mapObject centerMapToLatLng:loc];
+    if (show) {
+        if (!positionIndicator) {
+            positionIndicator = [mapObject drawMarkerAtLocation:loc withImage:@"pin_green" andAnchorPoint:CGPointMake(0.5, 1)];
+        }else
+            [mapObject moveMarker:positionIndicator toLoc:loc];
+    }else if (positionIndicator){
+        [mapObject removeMarker:positionIndicator];
+        positionIndicator = nil;
+    }
+    if (positionIndicatorEnd) {
+        [mapObject removeMarker:positionIndicatorEnd];
+        positionIndicatorEnd = nil;
     }
 }
 
@@ -277,19 +252,10 @@
 
 - (void)createEndMarkerForCoordinate:(CLLocationCoordinate2D)endMarkerCoordinate{
     if (CLLocationCoordinate2DIsValid(endMarkerCoordinate)) {
-        if (_mapType == MAP_TYPE_GOOGLE) {
-            if (!endMarker) {
-                endMarker = [[GMSMarker alloc] init];
-                [endMarker setMap:(GMSMapView *)mapView];
-            }
-            ((GMSMarker *)endMarker).position = endMarkerCoordinate;
-        }else{
-            if (!endMarker) {
-                endMarker = [[Annotation alloc]init];
-                [(MKMapView *)mapView addAnnotation:endMarker];
-            }
-            ((Annotation *)endMarker).coordinate = endMarkerCoordinate;
-        }
+        if (!endMarker) {
+            endMarker = [mapObject drawMarkerAtLocation:endMarkerCoordinate withImage:nil andAnchorPoint:CGPointZero];
+        }else
+            [mapObject moveMarker:endMarker toLoc:endMarkerCoordinate];
     }
 }
 
@@ -297,92 +263,22 @@
     if (!endMarker) {
         return;
     }
-    if (_mapType == MAP_TYPE_GOOGLE) {
-        ((GMSMarker *)endMarker).map = nil;
-    }else{
-        [(MKMapView *)mapView removeAnnotation:endMarker];
-    }
+    [mapObject removeMarker:endMarker];
     endMarker = nil;
 }
 
 - (void)setMapViewNorthEast:(CLLocationCoordinate2D)northEast andSouthWest:(CLLocationCoordinate2D)southWest withEdgeInset:(UIEdgeInsets)padding willhighLightNE:(BOOL)highlight{
-    BOOL isCoordinateSame = (fabs(northEast.latitude - southWest.latitude) <= MAP_DISTANCE_EPSILON &&  fabs(northEast.longitude - southWest.longitude) <= MAP_DISTANCE_EPSILON);
-    if (_mapType == MAP_TYPE_GOOGLE) {
-        if (highlight) {
-            if (!positionIndicator) {
-                positionIndicator = [GMSMarker markerWithPosition:northEast];
-                [((GMSMarker *)positionIndicator) setIcon:[UIImage imageNamed:@"pin_green"]];
-                ((GMSMarker *)positionIndicator).groundAnchor = CGPointMake(0.5, 1);
-                [positionIndicator setMap:(GMSMapView *)mapView];
-            }else{
-                ((GMSMarker *)positionIndicator).position = northEast;
-            }
-            if (!positionIndicatorEnd) {
-                positionIndicatorEnd = [GMSMarker markerWithPosition:southWest];
-                [((GMSMarker *)positionIndicatorEnd) setIcon:[UIImage imageNamed:@"pin_blue"]];
-                ((GMSMarker *)positionIndicatorEnd).groundAnchor = CGPointMake(0.5, 1);
-                [positionIndicatorEnd setMap:(GMSMapView *)mapView];
-
-            }else{
-                ((GMSMarker *)positionIndicatorEnd).position = southWest;
-            }
-        }else{
-            if(positionIndicator){
-                ((GMSMarker *)positionIndicator).map = nil;
-                positionIndicator = nil;
-            }
-            if (positionIndicatorEnd) {
-                ((GMSMarker *)positionIndicatorEnd).map = nil;
-                positionIndicatorEnd = nil;
-            }
-        }
-        if (isCoordinateSame) {
-            ((GMSMapView *)mapView).camera = [GMSCameraPosition cameraWithTarget:southWest zoom:16.5];
-        }else{
-            GMSCameraUpdate *camera = [GMSCameraUpdate fitBounds:[[GMSCoordinateBounds alloc]initWithCoordinate:northEast coordinate:southWest] withEdgeInsets:padding];
-            [(GMSMapView *)mapView animateWithCameraUpdate:camera];
-        }
-    }else{
-        if (isCoordinateSame) {
-            MKCoordinateRegion region;
-            region.span.latitudeDelta = 0.006;
-            region.span.longitudeDelta = 0.0;
-            region.center.latitude = southWest.latitude;
-            region.center.longitude = southWest.longitude;
-            [(MKMapView *)mapView setRegion:region animated:YES];
-        }else{
-            MKMapPoint leftTopMapPoint = MKMapPointForCoordinate(northEast);
-            MKMapPoint bottomRightMapPoint = MKMapPointForCoordinate(southWest);
-            CLLocationDegrees x = fmin(leftTopMapPoint.x, bottomRightMapPoint.x);
-            CLLocationDegrees y = fmin(leftTopMapPoint.y, bottomRightMapPoint.y);
-            CLLocationDegrees width = fabs(bottomRightMapPoint.x - leftTopMapPoint.x);
-            CLLocationDegrees height = fabs(bottomRightMapPoint.y - leftTopMapPoint.y);
-            [(MKMapView *)mapView setVisibleMapRect:MKMapRectMake( x, y, width, height) edgePadding:padding animated:YES];
-        }
-        if (highlight) {
-            if (positionIndicator) {
-                ((Annotation *)positionIndicator).coordinate = northEast;
-            }else{
-                positionIndicator =[[Annotation alloc] initWithCoordinate:northEast];
-                ((Annotation *)positionIndicator).type = 'g';
-                [(MKMapView *)mapView addAnnotation:positionIndicator];
-            }
-            if (positionIndicatorEnd) {
-                ((Annotation *)positionIndicatorEnd).coordinate = southWest;
-
-            }else{
-                positionIndicatorEnd =[[Annotation alloc] initWithCoordinate:southWest];
-                ((Annotation *)positionIndicatorEnd).type = 'b';
-                [(MKMapView *)mapView addAnnotation:positionIndicatorEnd];
-            }
-        }else{
-            if(positionIndicator){
-                [(MKMapView *)mapView removeAnnotation:positionIndicator];positionIndicator = nil;
-            }
-            if (positionIndicatorEnd) {
-                [(MKMapView *)mapView removeAnnotation:positionIndicatorEnd];positionIndicatorEnd = nil;
-            }
-        }
+    
+    [mapObject setMapViewNorthEast:northEast andSouthWest:southWest withEdgeInset:padding];
+    if (highlight) {
+        if (!positionIndicator) {
+            positionIndicator = [mapObject drawMarkerAtLocation:northEast withImage:@"pin_green" andAnchorPoint:CGPointMake(0.5, 1)];
+        }else
+            [mapObject moveMarker:positionIndicator toLoc:northEast];
+        if (!positionIndicatorEnd) {
+            positionIndicatorEnd = [mapObject drawMarkerAtLocation:southWest withImage:@"pin_blue" andAnchorPoint:CGPointMake(0.5, 1)];
+        }else
+            [mapObject moveMarker:positionIndicatorEnd toLoc:southWest];
     }
 }
 
@@ -453,39 +349,13 @@
         return;
     }
     OneRoute *curRouteObject = [allRoutes objectAtIndex:lastPageIndex];
-    NSArray *polyLines = [P2MSGoogleMapHelper getLocationsFromPolyLineString:curRouteObject.overview_polyline];
-    
-    if (_mapType == MAP_TYPE_GOOGLE) {
-        if (currentRoute) {
-            ((GMSPolyline *)currentRoute).map = nil;
-            currentRoute = nil;
-        }
-        GMSMutablePath *path = [GMSMutablePath path];
-        for (CLLocation *curLoc in polyLines) {
-            [path addCoordinate:[curLoc coordinate]];
-        }
-        currentRoute = [GMSPolyline polylineWithPath:path];
-        [currentRoute setStrokeWidth:5.0f];
-        ((GMSPolyline *)currentRoute).map = (GMSMapView *)mapView;
-    }else{
-        if (currentRoute) {
-            applePolyLineView.hidden = YES;
-            [(MKMapView *)mapView removeOverlay:currentRoute];
-            applePolyLineView = nil;
-            currentRoute = nil;
-        }
-        int count = [polyLines count];
-        CLLocationCoordinate2D *loc_ptr = malloc(sizeof(CLLocationCoordinate2D)*count);
-        for(int i = 0; i < count; i++) {
-            CLLocation *loc = [polyLines objectAtIndex:i];
-            loc_ptr[i] = loc.coordinate;
-        }
-        currentRoute = [MKPolyline polylineWithCoordinates:loc_ptr count:count];
-        [(MKMapView *)mapView addOverlay:currentRoute];
-        free(loc_ptr);
+    NSArray *polyLines = [P2MSMapHelper getLocationsFromPolyLineString:curRouteObject.overview_polyline];
+    if (currentRoute) {
+        [mapObject removePolyLine:currentRoute];
+        currentRoute = nil;
     }
-    
-    [self createEndMarkerForCoordinate:curRouteObject.endLoc];
+    currentRoute = [mapObject drawPolyLineWithCoordinates:polyLines];
+        [self createEndMarkerForCoordinate:curRouteObject.endLoc];
     [self setMapViewNorthEast:curRouteObject.startLoc andSouthWest:curRouteObject.endLoc withEdgeInset:UIEdgeInsetsMake(50, 15, 0, 15) willhighLightNE:NO];
 }
 
@@ -1067,7 +937,7 @@
             [curRequest cancel];
             curRequest = nil;
         }
-        curRequest = [P2MSGoogleMapHelper geoDecodeAddress:strToGeocode withNetworkDelegate:self];
+        curRequest = [P2MSMapHelper geoDecodeAddress:strToGeocode withNetworkDelegate:self];
         if (curRequest) {
             receivedData = [NSMutableData data];
         }
@@ -1212,7 +1082,7 @@
 - (void)queryPlaceAutoComplete:(NSString *)textToSearch{
     if ([searchController.searchBar.txtField.text isEqualToString:[self firstPartOfAddress:geocodeResult.address]])return;
     if (textToSearch.length && !curRequest) {
-        curRequest = [P2MSGoogleMapHelper getPlaceSuggestionsForQuery:textToSearch withCurLocation:[LocationManager sharedInstance].curLoc withDelegate:self];
+        curRequest = [P2MSMapHelper getPlaceSuggestionsForQuery:textToSearch withCurLocation:[LocationManager sharedInstance].curLoc withDelegate:self];
         if (curRequest) {
             receivedData = [NSMutableData data];
         }
@@ -1260,7 +1130,7 @@
             [self removePannedInfoViewAnimate:NO];
             geocodeResult = nil;
             panViewType = PAN_VIEW_SEARCH;
-            geocodeResult = [P2MSGoogleMapHelper googleMapGeocode:[responseJSON objectForKey:@"results"]];
+            geocodeResult = [P2MSMapHelper googleMapGeocode:[responseJSON objectForKey:@"results"]];
             [self createEndMarkerForCoordinate:geocodeResult.latLng];
             [self setMapViewNorthEast:geocodeResult.northeast andSouthWest:geocodeResult.southwest withEdgeInset:UIEdgeInsetsMake(50, 15, 0, 15) willhighLightNE:NO];
             [self populatePannedViewAnimated:YES];
@@ -1268,7 +1138,7 @@
             [self searchBarSetAddress:geocodeResult.address];
         }else{
             allSuggestions = nil;
-            allSuggestions = [P2MSGoogleMapHelper parseSuggestions:[responseJSON objectForKey:@"predictions"]];
+            allSuggestions = [P2MSMapHelper parseSuggestions:[responseJSON objectForKey:@"predictions"]];
             
             if (nextTextToSearch) {
                 [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(nextSearch) object:nil];
@@ -1311,12 +1181,6 @@
     geocodeResult = nil;
     [self removePannedInfoViewAnimate:YES];
     [self addRouteButtonToSearchBar];
-    if (_mapType == MAP_TYPE_GOOGLE) {
-        ((GMSMarker *)endMarker).map = nil;
-    }else{
-        [(MKMapView *)mapView removeAnnotation:endMarker];
-    }
-    endMarker = nil;
     [self removeEndMarker];
 }
 
@@ -1327,17 +1191,10 @@
         [routeView removeFromSuperview];
         routeView = nil;
     }];
-    if (_mapType == MAP_TYPE_GOOGLE) {
-        ((GMSPolyline *)currentRoute).map = nil;
-        
-    }else{
-        applePolyLineView.hidden = YES;
-        [(MKMapView *)mapView removeOverlay:currentRoute];
-        applePolyLineView = nil;
-        if (positionIndicator) {
-            [(MKMapView *)mapView removeAnnotation:positionIndicator];
-            positionIndicator = nil;
-        }
+    [mapObject removePolyLine:currentRoute];
+    if (positionIndicator) {
+        [mapObject removeMarker:positionIndicator];
+        positionIndicator = nil;
     }
     currentRoute = nil;
     
@@ -1355,66 +1212,6 @@
         [self removeEndMarker];
     }
     [mapView setNeedsDisplay];
-}
-
-
-#pragma mark MapKit
-- (MKAnnotationView *)mapView:(MKMapView *)mV viewForAnnotation:(id <MKAnnotation>)annotation {
-    if (![annotation isKindOfClass:[Annotation class]]) {
-        return nil;
-    }
-    MKAnnotationView *pinView = nil;
-    UIImage *pinImage;
-    switch (((Annotation *)annotation).type) {
-        case 'g':pinImage = [UIImage imageNamed:@"pin_green"];
-        case 'b':{
-            if (!pinImage) {
-                pinImage = [UIImage imageNamed:@"pin_blue"];
-            }
-            static NSString *circlePinID = @"CircleViewIdentifier";
-            pinView = (MKAnnotationView *)[(MKMapView *)mapView dequeueReusableAnnotationViewWithIdentifier:circlePinID];
-            if (pinView == nil){
-                pinView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:circlePinID];
-            }
-            pinView.centerOffset = CGPointMake(0, -11);
-            pinView.image = pinImage;
-            pinView.canShowCallout = NO;
-        }break;
-        default:{
-            static NSString *defaultPinID = @"StandardIdentifier";
-            pinView = (MKAnnotationView *)[(MKMapView *)mapView dequeueReusableAnnotationViewWithIdentifier:defaultPinID];
-            if (pinView == nil){
-                pinView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:defaultPinID];
-            }
-            pinView.image = [UIImage imageNamed:@"GoogleMaps.bundle/default_marker.png"];
-            pinView.centerOffset = CGPointMake(0, -15);
-            pinView.canShowCallout = NO;
-        }break;
-    }
-    return pinView;
-}
-
-- (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay{
-    MKOverlayView *overlayView = nil;
-    if ([overlay isKindOfClass:[MKPolyline class]]) {
-        if (currentRoute) {
-            if (applePolyLineView == nil) {
-                applePolyLineView = [[MKPolylineView alloc] initWithPolyline:currentRoute];
-                applePolyLineView.strokeColor = [[UIColor blueColor]colorWithAlphaComponent:0.7];
-                applePolyLineView.lineJoin = kCGLineJoinRound;
-                applePolyLineView.lineCap = kCGLineCapRound;
-            }
-            overlayView = applePolyLineView;
-        }
-    }
-    else if ([overlay isKindOfClass:[MKCircle class]]) {
-        MKCircleView *circleView = [[MKCircleView alloc] initWithOverlay:overlay];
-        circleView.strokeColor = [UIColor blueColor];
-        circleView.fillColor = [[UIColor blueColor] colorWithAlphaComponent:0.4];
-        circleView.lineWidth = 1.0;
-        overlayView = circleView;
-    }
-    return overlayView;
 }
 
 

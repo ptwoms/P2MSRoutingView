@@ -10,7 +10,7 @@
 #import "P2MSMapViewController.h"
 #import <GoogleMaps/GoogleMaps.h>
 #import "P2MSGlobalFunctions.h"
-#import "P2MSGoogleMapHelper.h"
+#import "P2MSMapHelper.h"
 
 
 @implementation AppDelegate
