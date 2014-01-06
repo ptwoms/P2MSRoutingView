@@ -21,7 +21,7 @@
     
     P2MSMapViewController *mapViewC = [[P2MSMapViewController alloc]initWithNibName:nil bundle:nil];
     [mapViewC setDefaultLocation:@"Shop Name, #xx-xx, Clementi Shopping Mall,\n Singapore" withCoordinate:CLLocationCoordinate2DMake(1.315047,103.764752)];
-    mapViewC.mapType = MAP_TYPE_APPLE;
+    mapViewC.mapType = MAP_TYPE_GOOGLE;
     mapViewC.mapAPISource = MAP_API_SOURCE_GOOGLE;
     self.window.rootViewController = mapViewC;
     self.window.backgroundColor = [UIColor whiteColor];
