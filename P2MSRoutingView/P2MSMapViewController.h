@@ -14,7 +14,6 @@
 
 
 #define MAX_ROUTING_STEPS 1000
-#define TABLEVIEW_TAG_BASE 100
 #define MAX_TABLE_VIEW 100
 
 typedef enum {

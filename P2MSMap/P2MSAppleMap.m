@@ -34,7 +34,7 @@
 }
 
 - (void)centerMapToLatLng:(CLLocationCoordinate2D)loc{
-    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(loc, 0.8*METERS_PER_MILE, 0.8*METERS_PER_MILE);
+    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(loc, 0.45*METERS_PER_MILE, 0.45*METERS_PER_MILE);
     [(MKMapView *)mapView setRegion:viewRegion animated:YES];
 }
 

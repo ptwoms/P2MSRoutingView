@@ -885,9 +885,9 @@
                 cell.textLabel.font = [UIFont systemFontOfSize:14];
             }
             if (indexPath.row == 0) {
-                cell.textLabel.text = @"Starting Point";
+                cell.textLabel.text = (startAddress.length)?startAddress:@"Starting Point";
             }else if (indexPath.row-1 == curRoute.travel_steps.count){
-                cell.textLabel.text = @"End Point";
+                cell.textLabel.text = (endAddress.length)?endAddress:@"End Point";
             }else{
                 curStep = [curRoute.travel_steps objectAtIndex:indexPath.row-1];
                 cell.textLabel.text = curStep.instruction;
@@ -939,7 +939,7 @@
             NSString *textToShow;
             if (indexPath.row == 0) {
                 textToShow = (startAddress.length)?startAddress:@"Starting Point";
-            }else if (indexPath.row-1 == curRoute.travel_steps.count){
+            }else if (indexPath.row > curRoute.travel_steps.count){
                 textToShow = (endAddress.length)?endAddress:@"End Point";
             }else{
                 textToShow = ((TravelStep *)[curRoute.travel_steps objectAtIndex:indexPath.row-1]).instruction;
@@ -995,10 +995,10 @@
                 }
             }
         }else {
-
+            [self paneView:pannedInfoView hidden:YES];
             if (indexPath.row == 0) {
                 [self centerMapToLatLng:curRoute.startLoc showPin:YES];
-            }else if(indexPath.section == curRoute.travel_steps.count){
+            }else if(indexPath.row > curRoute.travel_steps.count){
                 [self centerMapToLatLng:curRoute.endLoc showPin:YES];
             }else{
                 TravelStep *curTravelStep = [curRoute.travel_steps objectAtIndex:indexPath.row-1];

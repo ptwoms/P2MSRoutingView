@@ -38,7 +38,7 @@
 }
 
 - (void)centerMapToLatLng:(CLLocationCoordinate2D)loc{
-    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:loc.latitude longitude:loc.longitude zoom:15];
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:loc.latitude longitude:loc.longitude zoom:16.5];//15
     ((GMSMapView *)mapView).camera = camera;
 }
 

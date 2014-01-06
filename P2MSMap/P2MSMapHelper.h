@@ -23,6 +23,9 @@
 //This is used when locToGo is not provided.
 #define DEFAULT_LOCATION CLLocationCoordinate2DMake(16.815058, 94.700432)
 
+const static NSInteger TABLEVIEW_TAG_BASE = 100;
+
+
 @interface LocationSuggestion : NSObject
 
 @property (nonatomic, retain) NSString *name;
