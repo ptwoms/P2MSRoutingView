@@ -12,4 +12,6 @@
 
 @interface P2MSAppleMap : NSObject<P2MSMap, MKMapViewDelegate>
 
+//- (void)setMapDisplayType:(MAP_DISPLAY_TYPE)mapDisplayType;
+
 @end

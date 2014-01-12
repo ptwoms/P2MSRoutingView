@@ -47,12 +47,14 @@ Loading mapView with predefined Place Name and Coordinate
     mapViewC.mapAPISource = MAP_API_SOURCE_GOOGLE;
     //  - MAP_API_SOURCE_GOOGLE (default), 
     //  - MAP_API_SOURCE_ONE_MAP (haven't implemented)
+    mapViewC.allowDroppedPin = YES;
     
 
 will result in
 
-<img src="images/first-image.jpg" alt="Drawing" style="width: 200px;"/>
-<img src="images/apple-first-image.jpg" alt="Drawing"/>
+<img src="images/google-first.png" alt="Google Map" style="width: 200px;"/>
+<img src="images/apple-image.png" alt="Apple Map"/>
+<img src="images/left-slider.png" alt="Sidebar"/>
 <br />
 
 ###Place AutoComplete & Geocode

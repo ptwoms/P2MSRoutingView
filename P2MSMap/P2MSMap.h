@@ -11,11 +11,31 @@
 
 const static CGFloat METERS_PER_MILE = 1609.344;
 
+typedef enum {
+    MAP_DISPLAY_TYPE_STANDARD,
+    MAP_DISPLAY_TYPE_SATELLITE,
+    MAP_DISPLAY_TYPE_HYBRID
+}MAP_DISPLAY_TYPE;
+
+
+@class P2MSMap;
+
+@protocol P2MSMapDelegate <NSObject>
+
+//longPress
+- (void)handleLongPressForMap:(P2MSMap *)mapObject atCoordinate:(CLLocationCoordinate2D) coordinate;
+
+@end
+
 @protocol P2MSMap <NSObject>
 
 @property (nonatomic, retain) UIView *mapView;
+@property (nonatomic) MAP_DISPLAY_TYPE mapDisplayType;
 
 @required
+
+@property (nonatomic, weak) id<P2MSMapDelegate> delegate;
+
 - (id)createMapViewForRect:(CGRect)rect withDefaultLocation:(CLLocationCoordinate2D)defaultLocation andZoomLevel:(CGFloat)zoomLevel inView:(UIView *)parentView;
 - (void)centerMapToLatLng:(CLLocationCoordinate2D)loc;
 
@@ -31,5 +51,6 @@ const static CGFloat METERS_PER_MILE = 1609.344;
 
 - (id)drawPolyLineWithCoordinates:(NSArray *)points;
 - (void)removePolyLine:(id)polyLine;
+
 
 @end

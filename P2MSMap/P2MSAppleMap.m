@@ -13,6 +13,8 @@
 @implementation P2MSAppleMap
 
 @synthesize mapView;
+@synthesize delegate;
+@synthesize mapDisplayType = _mapDisplayType;
 
 - (id)createMapViewForRect:(CGRect)rect withDefaultLocation:(CLLocationCoordinate2D)defaultLocation andZoomLevel:(CGFloat)zoomLevel inView:(UIView *)parentView{
     MKMapView *appleMapView  = [[MKMapView alloc]initWithFrame:rect];
@@ -25,12 +27,31 @@
     P2MSUserTrackingButton *trackBtn = [[P2MSUserTrackingButton alloc]initWithMapView:appleMapView andFrame:CGRectMake(rect.size.width-40, rect.size.height-50, 30, 30)];
     [appleMapView addSubview:trackBtn];
     mapView = appleMapView;
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(handleLongPress:)];
+//    longPress.minimumPressDuration = 1.0f;
+    [mapView addGestureRecognizer:longPress];
     return appleMapView;
 }
 
 - (void)removeMap{
     [mapView removeFromSuperview];
     mapView = nil;
+}
+
+- (void)setMapDisplayType:(MAP_DISPLAY_TYPE)mapDisplayType{
+    _mapDisplayType = mapDisplayType;
+    MKMapType mkMapType = MKMapTypeStandard;
+    switch (mapDisplayType) {
+        case MAP_DISPLAY_TYPE_HYBRID:{
+            mkMapType = MKMapTypeHybrid;
+        }break;
+        case MAP_DISPLAY_TYPE_SATELLITE:{
+            mkMapType = MKMapTypeSatellite;
+        }break;
+        default:
+            break;
+    }
+    [(MKMapView *)mapView setMapType:mkMapType];
 }
 
 - (void)centerMapToLatLng:(CLLocationCoordinate2D)loc{
@@ -132,5 +153,14 @@
     return overlayView;
 }
 
+
+#pragma mark Long Press
+- (IBAction)handleLongPress:(UILongPressGestureRecognizer *)sender{
+    if (sender.state == UIGestureRecognizerStateBegan) {
+        CGPoint touchPoint = [sender locationInView:self.mapView];
+        CLLocationCoordinate2D touchMapCoordinate = [(MKMapView *)self.mapView convertPoint:touchPoint toCoordinateFromView:self.mapView];
+        [self.delegate handleLongPressForMap:(P2MSMap *)self atCoordinate:touchMapCoordinate];
+    }
+}
 
 @end

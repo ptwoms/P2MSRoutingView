@@ -18,6 +18,7 @@
     
 }
 
+//- (void)setMapDisplayType:(MAP_DISPLAY_TYPE)mapDisplayType;
 
 @end
 

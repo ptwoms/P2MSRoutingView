@@ -12,6 +12,8 @@
 
 @implementation P2MSGoogleMap
 @synthesize mapView;
+@synthesize delegate;
+@synthesize mapDisplayType = _mapDisplayType;
 
 - (id)init{
     self = [super init];
@@ -19,6 +21,22 @@
             [GMSServices provideAPIKey:GOOGLEMAP_IOS_KEY];
     }
     return self;
+}
+
+- (void)setMapDisplayType:(MAP_DISPLAY_TYPE)mapDisplayType{
+    _mapDisplayType = mapDisplayType;
+    GMSMapViewType gmsMapType = kGMSTypeNormal;
+    switch (mapDisplayType) {
+        case MAP_DISPLAY_TYPE_HYBRID:{
+            gmsMapType = kGMSTypeHybrid;
+        }break;
+        case MAP_DISPLAY_TYPE_SATELLITE:{
+            gmsMapType = kGMSTypeSatellite;
+        }break;
+        default:
+            break;
+    }
+    [(GMSMapView *)mapView setMapType:gmsMapType];
 }
 
 - (id)createMapViewForRect:(CGRect)rect withDefaultLocation:(CLLocationCoordinate2D)defaultLocation andZoomLevel:(CGFloat)zoomLevel inView:(UIView *)parentView{
@@ -88,6 +106,11 @@
 
 - (void)removePolyLine:(id)polyLine{
     ((GMSPolyline *)polyLine).map = nil;
+}
+
+#pragma mark Delegate
+- (void)mapView:(GMSMapView *)mapView didLongPressAtCoordinate:(CLLocationCoordinate2D)coordinate{
+    [self.delegate handleLongPressForMap:(P2MSMap *)self atCoordinate:coordinate];
 }
 
 @end

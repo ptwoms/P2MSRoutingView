@@ -10,12 +10,21 @@
 
 @implementation P2MSGoogleMapAPI
 
-- (P2MSNetworkRequest *) geoDecodeAddress:(NSString *)addressToDecode withNetworkDelegate:(id<NSURLConnectionDelegate>) delegate{
+- (P2MSNetworkRequest *) geocodeAddress:(NSString *)addressToDecode withNetworkDelegate:(id<NSURLConnectionDelegate>) delegate{
     NSMutableString *urlString = [NSMutableString stringWithFormat:@"https://maps.googleapis.com/maps/api/geocode/json?address=%@&sensor=false", addressToDecode];
     NSLog(@"Geodecode Request %@", urlString);
     NSURLRequest *request = [[NSURLRequest alloc]initWithURL:[NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
     P2MSNetworkRequest *connection = [[P2MSNetworkRequest alloc]initWithRequest:request delegate:delegate];
     connection.userInfo = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"geocode", nil] forKeys:[NSArray arrayWithObjects:@"req_type", nil]];
+    return connection;
+}
+
+- (P2MSNetworkRequest *) reverseGeocodeLatLng:(CLLocationCoordinate2D)latlng withNetworkDelegate:(id<NSURLConnectionDelegate>) delegate{
+    NSMutableString *urlString = [NSMutableString stringWithFormat:@"https://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f&sensor=false", latlng.latitude, latlng.longitude];
+    NSLog(@"Reverse Geodecode Request %@", urlString);
+    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:[NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+    P2MSNetworkRequest *connection = [[P2MSNetworkRequest alloc]initWithRequest:request delegate:delegate];
+    connection.userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"reverse-geocode", @"req_type", [[CLLocation alloc]initWithLatitude:latlng.latitude longitude:latlng.longitude], @"location", nil];
     return connection;
 }
 
@@ -30,6 +39,35 @@
     NSDictionary *geoDict = [firstResult objectForKey:@"geometry"];
     NSDictionary *locDict = [geoDict objectForKey:@"location"];
     geoResult.latLng = CLLocationCoordinate2DMake([[locDict objectForKey:@"lat"]floatValue], [[locDict objectForKey:@"lng"]floatValue]);
+    NSDictionary *boundsDict = [geoDict objectForKey:@"viewport"];
+    NSDictionary *tempBdDict = [boundsDict objectForKey:@"northeast"];
+    geoResult.northeast = CLLocationCoordinate2DMake([[tempBdDict objectForKey:@"lat"]floatValue], [[tempBdDict objectForKey:@"lng"]floatValue]);
+    tempBdDict = [boundsDict objectForKey:@"southwest"];
+    geoResult.southwest = CLLocationCoordinate2DMake([[tempBdDict objectForKey:@"lat"]floatValue], [[tempBdDict objectForKey:@"lng"]floatValue]);
+    return geoResult;
+}
+
+- (P2MSLocationInfo *)mapReverseGeocode:(id)responseJSON forLocation:(CLLocationCoordinate2D)location{
+    NSArray *results = [responseJSON objectForKey:@"results"];
+    if (!results.count) {
+        return nil;
+    }
+    NSDictionary *firstResult = [results objectAtIndex:0];
+    NSDictionary *geoDict = [firstResult objectForKey:@"geometry"];
+    NSDictionary *locDict = [geoDict objectForKey:@"location"];
+    CLLocationCoordinate2D resultLatLng = CLLocationCoordinate2DMake([[locDict objectForKey:@"lat"]floatValue], [[locDict objectForKey:@"lng"]floatValue]);
+    NSString *formattedAds = [firstResult objectForKey:@"formatted_address"];
+    P2MSLocationInfo *geoResult = [P2MSLocationInfo new];
+//    geoResult.latLng = 
+//    if (location.latitude == resultLatLng.latitude && location.longitude == resultLatLng.longitude) {
+//        geoResult.address = formattedAds;
+//    }else{
+        geoResult.address = [NSString stringWithFormat:@"Dropped Pin, %@", formattedAds];
+//    }
+//    geoResult.latLng = location;
+    
+    //Here I used the address returned by the Google API instead of the touch location
+    geoResult.latLng = resultLatLng;
     NSDictionary *boundsDict = [geoDict objectForKey:@"viewport"];
     NSDictionary *tempBdDict = [boundsDict objectForKey:@"northeast"];
     geoResult.northeast = CLLocationCoordinate2DMake([[tempBdDict objectForKey:@"lat"]floatValue], [[tempBdDict objectForKey:@"lng"]floatValue]);

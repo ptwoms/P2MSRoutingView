@@ -20,17 +20,25 @@
 		39B09CEE1828848F0089080D /* no_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 39B09CEC1828848F0089080D /* no_icon.png */; };
 		39B09CEF1828848F0089080D /* no_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 39B09CED1828848F0089080D /* no_icon@2x.png */; };
 		C817B2A11843909E005709EA /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C817B2A01843909E005709EA /* MapKit.framework */; };
+		C81A2EF6188235360080074F /* side_handle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C81A2EF5188235360080074F /* side_handle@2x.png */; };
 		C81A44D0182E8D3B00EE9BF1 /* close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C81A44CF182E8D3B00EE9BF1 /* close@2x.png */; };
 		C81A44D6182E9B0700EE9BF1 /* P2MSSearchDisplayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C81A44D5182E9B0700EE9BF1 /* P2MSSearchDisplayViewController.m */; };
 		C81A6F6818464F3800CD6628 /* pin_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C81A6F6618464F3800CD6628 /* pin_blue@2x.png */; };
 		C81A6F6918464F3800CD6628 /* pin_green@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C81A6F6718464F3800CD6628 /* pin_green@2x.png */; };
 		C81A98DA1847999D0083616F /* P2MSUserTrackingButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C81A98D91847999D0083616F /* P2MSUserTrackingButton.m */; };
+		C81A9AD0187AFA71008FED1B /* P2MSSimpleSideBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C81A9ACF187AFA71008FED1B /* P2MSSimpleSideBar.m */; };
+		C81A9AD3187B0062008FED1B /* P2MSSideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C81A9AD2187B0062008FED1B /* P2MSSideViewController.m */; };
+		C81AB38B187C378E0031FD96 /* P2MSView.m in Sources */ = {isa = PBXBuildFile; fileRef = C81AB38A187C378E0031FD96 /* P2MSView.m */; };
 		C81AC01D1848FA9600275D2A /* current_located.png in Resources */ = {isa = PBXBuildFile; fileRef = C81AC01A1848FA9600275D2A /* current_located.png */; };
 		C81AC01E1848FA9600275D2A /* location_not_active.png in Resources */ = {isa = PBXBuildFile; fileRef = C81AC01B1848FA9600275D2A /* location_not_active.png */; };
 		C81AC01F1848FA9600275D2A /* location-tracked.png in Resources */ = {isa = PBXBuildFile; fileRef = C81AC01C1848FA9600275D2A /* location-tracked.png */; };
 		C81B240D18279B2D0068B552 /* no_route.png in Resources */ = {isa = PBXBuildFile; fileRef = C81B240B18279B2D0068B552 /* no_route.png */; };
 		C81B241118279D370068B552 /* P2MSActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = C81B241018279D370068B552 /* P2MSActivityIndicator.m */; };
 		C81B241318279DE50068B552 /* loading_1.png in Resources */ = {isa = PBXBuildFile; fileRef = C81B241218279DE50068B552 /* loading_1.png */; };
+		C81B77C71882C1A600F7E3F6 /* P2MSWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C81B77C61882C1A600F7E3F6 /* P2MSWebViewController.m */; };
+		C81B77CB1882C5B200F7E3F6 /* backward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C81B77C81882C5B200F7E3F6 /* backward@2x.png */; };
+		C81B77CC1882C5B200F7E3F6 /* forward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C81B77C91882C5B200F7E3F6 /* forward@2x.png */; };
+		C81B77CD1882C5B200F7E3F6 /* refresh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C81B77CA1882C5B200F7E3F6 /* refresh@2x.png */; };
 		C81B7AF618421A9A009508DB /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C81B7AF518421A9A009508DB /* GoogleMaps.bundle */; };
 		C81C3A14182F595F001E44E2 /* search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C81C3A13182F595F001E44E2 /* search@2x.png */; };
 		C81C70BD1849DBF0000D401B /* powered-by-google-on-white.png in Resources */ = {isa = PBXBuildFile; fileRef = C81C70BB1849DBF0000D401B /* powered-by-google-on-white.png */; };
@@ -127,6 +135,7 @@
 		39B09CEC1828848F0089080D /* no_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = no_icon.png; sourceTree = "<group>"; };
 		39B09CED1828848F0089080D /* no_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "no_icon@2x.png"; sourceTree = "<group>"; };
 		C817B2A01843909E005709EA /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		C81A2EF5188235360080074F /* side_handle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "side_handle@2x.png"; sourceTree = "<group>"; };
 		C81A44CF182E8D3B00EE9BF1 /* close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close@2x.png"; sourceTree = "<group>"; };
 		C81A44D4182E9B0700EE9BF1 /* P2MSSearchDisplayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = P2MSSearchDisplayViewController.h; sourceTree = "<group>"; };
 		C81A44D5182E9B0700EE9BF1 /* P2MSSearchDisplayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = P2MSSearchDisplayViewController.m; sourceTree = "<group>"; };
@@ -134,6 +143,12 @@
 		C81A6F6718464F3800CD6628 /* pin_green@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin_green@2x.png"; sourceTree = "<group>"; };
 		C81A98D81847999D0083616F /* P2MSUserTrackingButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = P2MSUserTrackingButton.h; sourceTree = "<group>"; };
 		C81A98D91847999D0083616F /* P2MSUserTrackingButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = P2MSUserTrackingButton.m; sourceTree = "<group>"; };
+		C81A9ACE187AFA71008FED1B /* P2MSSimpleSideBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = P2MSSimpleSideBar.h; sourceTree = "<group>"; };
+		C81A9ACF187AFA71008FED1B /* P2MSSimpleSideBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = P2MSSimpleSideBar.m; sourceTree = "<group>"; };
+		C81A9AD1187B0062008FED1B /* P2MSSideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = P2MSSideViewController.h; sourceTree = "<group>"; };
+		C81A9AD2187B0062008FED1B /* P2MSSideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = P2MSSideViewController.m; sourceTree = "<group>"; };
+		C81AB389187C378E0031FD96 /* P2MSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = P2MSView.h; sourceTree = "<group>"; };
+		C81AB38A187C378E0031FD96 /* P2MSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = P2MSView.m; sourceTree = "<group>"; };
 		C81AC01A1848FA9600275D2A /* current_located.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = current_located.png; sourceTree = "<group>"; };
 		C81AC01B1848FA9600275D2A /* location_not_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = location_not_active.png; sourceTree = "<group>"; };
 		C81AC01C1848FA9600275D2A /* location-tracked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location-tracked.png"; sourceTree = "<group>"; };
@@ -142,6 +157,11 @@
 		C81B240F18279D370068B552 /* P2MSActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = P2MSActivityIndicator.h; sourceTree = "<group>"; };
 		C81B241018279D370068B552 /* P2MSActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = P2MSActivityIndicator.m; sourceTree = "<group>"; };
 		C81B241218279DE50068B552 /* loading_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading_1.png; sourceTree = "<group>"; };
+		C81B77C51882C1A600F7E3F6 /* P2MSWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = P2MSWebViewController.h; sourceTree = "<group>"; };
+		C81B77C61882C1A600F7E3F6 /* P2MSWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = P2MSWebViewController.m; sourceTree = "<group>"; };
+		C81B77C81882C5B200F7E3F6 /* backward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backward@2x.png"; sourceTree = "<group>"; };
+		C81B77C91882C5B200F7E3F6 /* forward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "forward@2x.png"; sourceTree = "<group>"; };
+		C81B77CA1882C5B200F7E3F6 /* refresh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "refresh@2x.png"; sourceTree = "<group>"; };
 		C81B7AF518421A9A009508DB /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GoogleMaps.bundle; sourceTree = "<group>"; };
 		C81C3A13182F595F001E44E2 /* search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search@2x.png"; sourceTree = "<group>"; };
 		C81C70BB1849DBF0000D401B /* powered-by-google-on-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "powered-by-google-on-white.png"; sourceTree = "<group>"; };
@@ -298,6 +318,15 @@
 			path = transit_icon_set_2;
 			sourceTree = "<group>";
 		};
+		C81B77C41882C12400F7E3F6 /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				C81B77C51882C1A600F7E3F6 /* P2MSWebViewController.h */,
+				C81B77C61882C1A600F7E3F6 /* P2MSWebViewController.m */,
+			);
+			path = Misc;
+			sourceTree = "<group>";
+		};
 		C86591C21872F0D0008FE04A /* P2MSMap */ = {
 			isa = PBXGroup;
 			children = (
@@ -324,6 +353,10 @@
 		C89A99811800F3D300810E85 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				C81B77C81882C5B200F7E3F6 /* backward@2x.png */,
+				C81B77C91882C5B200F7E3F6 /* forward@2x.png */,
+				C81B77CA1882C5B200F7E3F6 /* refresh@2x.png */,
+				C81A2EF5188235360080074F /* side_handle@2x.png */,
 				C81C70BB1849DBF0000D401B /* powered-by-google-on-white.png */,
 				C81C70BC1849DBF0000D401B /* powered-by-google-on-white@2x.png */,
 				C81AC01A1848FA9600275D2A /* current_located.png */,
@@ -366,6 +399,7 @@
 		C8E3A89D17F33DA400630D0D = {
 			isa = PBXGroup;
 			children = (
+				C81B77C41882C12400F7E3F6 /* Misc */,
 				C86591C21872F0D0008FE04A /* P2MSMap */,
 				C8E3A8AF17F33DA400630D0D /* P2MSRoutingView */,
 				C8E3A8A817F33DA400630D0D /* Frameworks */,
@@ -462,6 +496,12 @@
 				C81A44D5182E9B0700EE9BF1 /* P2MSSearchDisplayViewController.m */,
 				C81A98D81847999D0083616F /* P2MSUserTrackingButton.h */,
 				C81A98D91847999D0083616F /* P2MSUserTrackingButton.m */,
+				C81A9ACE187AFA71008FED1B /* P2MSSimpleSideBar.h */,
+				C81A9ACF187AFA71008FED1B /* P2MSSimpleSideBar.m */,
+				C81A9AD1187B0062008FED1B /* P2MSSideViewController.h */,
+				C81A9AD2187B0062008FED1B /* P2MSSideViewController.m */,
+				C81AB389187C378E0031FD96 /* P2MSView.h */,
+				C81AB38A187C378E0031FD96 /* P2MSView.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -568,11 +608,13 @@
 				C89A99AC1800F3D300810E85 /* walk-highlight.png in Resources */,
 				C89A99A11800F3D300810E85 /* car@2x.png in Resources */,
 				C81E0B54183D04400075E960 /* direction@2x.png in Resources */,
+				C81A2EF6188235360080074F /* side_handle@2x.png in Resources */,
 				C89A99A01800F3D300810E85 /* car.png in Resources */,
 				C81C70BE1849DBF0000D401B /* powered-by-google-on-white@2x.png in Resources */,
 				3927393B1820A0A8005BC7CF /* train_icon@2x.png in Resources */,
 				392739371820A0A8005BC7CF /* lrt_icon@2x.png in Resources */,
 				C8E3A8B417F33DA400630D0D /* InfoPlist.strings in Resources */,
+				C81B77CB1882C5B200F7E3F6 /* backward@2x.png in Resources */,
 				C81AC01F1848FA9600275D2A /* location-tracked.png in Resources */,
 				C81B7AF618421A9A009508DB /* GoogleMaps.bundle in Resources */,
 				C81B241318279DE50068B552 /* loading_1.png in Resources */,
@@ -582,6 +624,8 @@
 				C81C3A14182F595F001E44E2 /* search@2x.png in Resources */,
 				39B09CEE1828848F0089080D /* no_icon.png in Resources */,
 				C89A99AD1800F3D300810E85 /* walk-highlight@2x.png in Resources */,
+				C81B77CC1882C5B200F7E3F6 /* forward@2x.png in Resources */,
+				C81B77CD1882C5B200F7E3F6 /* refresh@2x.png in Resources */,
 				C89A999A1800F3D300810E85 /* bus-highlight.png in Resources */,
 				392739361820A0A8005BC7CF /* lrt_icon.png in Resources */,
 				39B09CEF1828848F0089080D /* no_icon@2x.png in Resources */,
@@ -630,6 +674,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C81AB38B187C378E0031FD96 /* P2MSView.m in Sources */,
 				C8E3A8E617F33E6400630D0D /* LocationManager.m in Sources */,
 				C81A98DA1847999D0083616F /* P2MSUserTrackingButton.m in Sources */,
 				C8E3A8FA17F346CE00630D0D /* P2MSNetworkRequest.m in Sources */,
@@ -639,6 +684,8 @@
 				C8E3A8E917F33F3700630D0D /* P2MSMapViewController.m in Sources */,
 				C86ED8E5182940BA00A3AF6D /* UIView+P2MSShadowCategory.m in Sources */,
 				C8E3A8EC17F33F4200630D0D /* P2MSRoutingViewController.m in Sources */,
+				C81A9AD3187B0062008FED1B /* P2MSSideViewController.m in Sources */,
+				C81A9AD0187AFA71008FED1B /* P2MSSimpleSideBar.m in Sources */,
 				C83406B6182A977D009E1316 /* P2MSSearchBar.m in Sources */,
 				C86591D61873F018008FE04A /* Annotation.m in Sources */,
 				C8E3A8F717F3437500630D0D /* P2MSGlobalFunctions.m in Sources */,
@@ -650,6 +697,7 @@
 				C86591CD1872F7E1008FE04A /* P2MSMapHelper.m in Sources */,
 				C8437727187448250006E1B6 /* P2MSOneMapAPI.m in Sources */,
 				C81B241118279D370068B552 /* P2MSActivityIndicator.m in Sources */,
+				C81B77C71882C1A600F7E3F6 /* P2MSWebViewController.m in Sources */,
 				C843772418741CF70006E1B6 /* P2MSGoogleMapAPI.m in Sources */,
 				C86591D91873FC46008FE04A /* P2MSEsriMap.m in Sources */,
 			);

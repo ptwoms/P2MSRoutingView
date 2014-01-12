@@ -10,8 +10,13 @@
 
 @implementation P2MSOneMapAPI
 
-- (P2MSNetworkRequest *) geoDecodeAddress:(NSString *)addressToDecode withNetworkDelegate:(id<NSURLConnectionDelegate>) delegate{
+- (P2MSNetworkRequest *) geocodeAddress:(NSString *)addressToDecode withNetworkDelegate:(id<NSURLConnectionDelegate>)delegate{
 //    connection.userInfo = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"geocode", nil] forKeys:[NSArray arrayWithObjects:@"req_type", nil]];
+    return nil;
+}
+
+- (P2MSNetworkRequest *) reverseGeocodeLatLng:(CLLocationCoordinate2D)latlng withNetworkDelegate:(id<NSURLConnectionDelegate>) delegate{
+//    connection.userInfo = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"reverse-geocode", nil] forKeys:[NSArray arrayWithObjects:@"req_type", nil]];
     return nil;
 }
 
@@ -19,6 +24,9 @@
     return nil;
 }
 
+- (P2MSLocationInfo *)mapReverseGeocode:(id)responseJSON forLocation:(CLLocationCoordinate2D)location{
+    return nil;
+}
 
 - (P2MSNetworkRequest *) getDirectionFromLocation:(NSString *) startLoc to:(NSString *) endLoc forTravelMode:(NSString *)mode alternatives:(BOOL)alternative withNetworkDelegate:(id<NSURLConnectionDelegate>) delegate{
 //        connection.userInfo = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"direction", mode, nil] forKeys:[NSArray arrayWithObjects:@"req_type", @"travel_mode", nil]];

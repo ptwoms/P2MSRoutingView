@@ -18,12 +18,15 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
+
     P2MSMapViewController *mapViewC = [[P2MSMapViewController alloc]initWithNibName:nil bundle:nil];
+    UINavigationController *navCtrl = [[UINavigationController alloc]initWithRootViewController:mapViewC];
+    [navCtrl setNavigationBarHidden:YES animated:NO];
     [mapViewC setDefaultLocation:@"Shop Name, #xx-xx, Clementi Shopping Mall,\n Singapore" withCoordinate:CLLocationCoordinate2DMake(1.315047,103.764752)];
     mapViewC.mapType = MAP_TYPE_GOOGLE;
     mapViewC.mapAPISource = MAP_API_SOURCE_GOOGLE;
-    self.window.rootViewController = mapViewC;
+    mapViewC.allowDroppedPin = YES;
+    self.window.rootViewController = navCtrl;
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     

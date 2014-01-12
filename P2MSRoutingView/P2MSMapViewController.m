@@ -18,6 +18,7 @@
 #import "P2MSAppleMap.h"
 #import "P2MSMapAPI.h"
 #import "P2MSGoogleMapAPI.h"
+#import "P2MSSimpleSideBar.h"
 
 
 @interface P2MSMapViewController (){
@@ -57,6 +58,8 @@
     
     id<P2MSMap> mapObject;
     id<P2MSMapAPI> mapAPIObject;
+    
+    P2MSSimpleSideBar *sideBar;
 }
 
 @end
@@ -74,8 +77,20 @@
         panViewType = PAN_VIEW_NONE;
         self.mapType = MAP_TYPE_GOOGLE;
         self.mapAPISource = MAP_API_SOURCE_GOOGLE;
+        sideBar = [[P2MSSimpleSideBar alloc]init];
+        _allowDroppedPin = YES;
     }
     return self;
+}
+
+- (void)loadView{
+    P2MSView *customView = [[P2MSView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];
+    customView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    customView.contentMode = UIViewContentModeScaleAspectFit;
+    customView.backgroundColor = [UIColor whiteColor];
+    customView.delegate = self;
+    self.view = customView;
+
 }
 
 - (void)setMapType:(MAP_TYPE)mapType{
@@ -100,6 +115,7 @@
 //#endif
         }break;
     }
+    mapObject.delegate = self;
 }
 
 - (void)setMapAPISource:(MAP_API_SOURCE)mapAPISource{
@@ -209,6 +225,12 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
     
     topPadding = [P2MSGlobalFunctions sharedInstance].isIOS_7_OR_LATER*20;
+    
+    P2MSSideViewController *sideVC = [[P2MSSideViewController alloc]initWithNibName:nil bundle:nil];
+    sideVC.sideBar = sideBar;
+    sideVC.delegate = self;
+    [sideBar initSideBar:sideVC withVC:self andSideWidth:250];
+    [self.view addSubview:sideBar.sideMenuController.view];
 
     [[LocationManager sharedInstance]startStandardUpdates];
     selectedIndexes = [NSMutableIndexSet indexSet];
@@ -227,6 +249,14 @@
     searchController.searchResultsDelegate = self;
 
     [self addRouteButtonToSearchBar];
+    
+    UIButton *dragView = [[UIButton alloc]initWithFrame:CGRectMake(0, 300, 20, 45)];
+    dragView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleRightMargin;
+    [dragView setImage:[UIImage imageNamed:@"side_handle"] forState:UIControlStateNormal];
+    [self.view addSubview:dragView];
+    [dragView addTarget:self action:@selector(openSideBar:) forControlEvents:UIControlEventTouchUpInside];
+    [sideBar setHandleView:dragView];
+
 }
 
 
@@ -306,10 +336,6 @@
     [[LocationManager sharedInstance]stopStandardUpdates];
 }
 
-- (void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
-    [self animateCurrentRoute];
-}
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -324,11 +350,16 @@
     }else{
         [self performSelector:@selector(centerMapToCurLoc) withObject:nil afterDelay:0.5];
     }
-    
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+
     if (pannedInfoView) {
         pannedInfoView.hidden = NO;
         [self adjustInfoView:mainScrollView withAnimation:0.0 toOrientation:self.interfaceOrientation];
     }
+    [self animateCurrentRoute];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -442,6 +473,7 @@
     }
     [self.view bringSubviewToFront:pannedInfoView];
     pannedInfoView.frame = curRect;
+    NSLog(@"Panned Info View %f,%f", curRect.origin.y, curRect.size.height);
     mainScrollView.frame = CGRectMake(0, 0, curRect.size.width, curRect.size.height);
     
     NSInteger curIndex = 0;
@@ -618,7 +650,7 @@
         paneView.frame = curRect;
         
         if (sender.state == UIGestureRecognizerStateEnded || sender.state == UIGestureRecognizerStateCancelled) {
-            CGPoint velocity = [sender velocityInView:self.navigationController.view];
+            CGPoint velocity = [sender velocityInView:self.navigationController.view];//self.view (works on both)
             CGFloat finalY = translatedPoint.y + (.35*velocity.y);
             CGFloat viewHeight = self.view.frame.size.height;
             BOOL willShowPannedInfoView;
@@ -958,7 +990,7 @@
             [curRequest cancel];
             curRequest = nil;
         }
-        curRequest = [mapAPIObject geoDecodeAddress:strToGeocode withNetworkDelegate:self];
+        curRequest = [mapAPIObject geocodeAddress:strToGeocode withNetworkDelegate:self];
         if (curRequest) {
             receivedData = [NSMutableData data];
         }
@@ -1146,11 +1178,23 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection{
     id responseJSON = [receivedData objectFromJSONData];
     if ([mapAPIObject isResponseOK:responseJSON]) {
-        if ([[curRequest.userInfo objectForKey:@"req_type"] isEqualToString:@"geocode"]) {
+        NSString *reqType = [curRequest.userInfo objectForKey:@"req_type"];
+        if ([reqType isEqualToString:@"geocode"]) {
             [self removePannedInfoViewAnimate:NO];
             geocodeResult = nil;
             panViewType = PAN_VIEW_SEARCH;
             geocodeResult = [mapAPIObject mapGeocode:responseJSON];
+            [self createEndMarkerForCoordinate:geocodeResult.latLng];
+            [self setMapViewNorthEast:geocodeResult.northeast andSouthWest:geocodeResult.southwest withEdgeInset:UIEdgeInsetsMake(50, 15, 0, 15) willhighLightNE:NO];
+            [self populatePannedViewAnimated:YES];
+            
+            [self searchBarSetAddress:geocodeResult.address];
+        }else if([reqType isEqualToString:@"reverse-geocode"]) {
+            [self removePannedInfoViewAnimate:NO];
+            geocodeResult = nil;
+            panViewType = PAN_VIEW_SEARCH;
+            CLLocation *coord = [curRequest.userInfo objectForKey:@"location"];
+            geocodeResult = [mapAPIObject mapReverseGeocode:responseJSON forLocation:[coord coordinate]];
             [self createEndMarkerForCoordinate:geocodeResult.latLng];
             [self setMapViewNorthEast:geocodeResult.northeast andSouthWest:geocodeResult.southwest withEdgeInset:UIEdgeInsetsMake(50, 15, 0, 15) willhighLightNE:NO];
             [self populatePannedViewAnimated:YES];
@@ -1222,6 +1266,7 @@
     [self removePannedInfoViewAnimate:NO];
     if (geocodeResult) {
         panViewType = PAN_VIEW_SEARCH;
+        panViewVisibleHeight = 70;
         [self populatePannedViewAnimated:NO];
     }else{
         [self removeEndMarker];
@@ -1229,7 +1274,49 @@
     [mapView setNeedsDisplay];
 }
 
+#pragma mark P2MSViewDelegate
+- (void)didAddSubView:(UIView *)rootVeiw subView:(UIView *)subView{
+    if ([rootVeiw isEqual:self.view] && sideBar) {
+        [self.view bringSubviewToFront:sideBar.sideMenuController.view];
+    }
+}
 
+//be careful to use this method, otherwise it will result in infinit loop
+- (void)didBringSubViewToFront:(UIView *)rootVeiw subView:(UIView *)subView{
+    if ([rootVeiw isEqual:self.view] && ![subView isEqual:sideBar.sideMenuController.view]) {
+        [self.view bringSubviewToFront:sideBar.sideMenuController.view];
+    }
+}
+
+
+#pragma mark P2MSMapDelegate
+- (void)handleLongPressForMap:(P2MSMap *)mapObject1 atCoordinate:(CLLocationCoordinate2D)coordinate{
+    if (!allRoutes && _allowDroppedPin) {
+        if (!curRequest) {
+            [self createEndMarkerForCoordinate:coordinate];
+            curRequest = [mapAPIObject reverseGeocodeLatLng:coordinate withNetworkDelegate:self];
+            if (curRequest) {
+                receivedData = [NSMutableData data];
+            }
+        }
+    }
+}
+
+#pragma mark Sidebar Handle
+- (IBAction)openSideBar:(id)sender{
+    sideBar.state = SIDEBAR_OPEN;
+}
+
+- (void)doActionForSideViewController:(P2MSSideViewController *)viewC withCommand:(NSString *)command{
+    sideBar.state = SIDEBAR_CLOSE;
+    if ([command isEqualToString:@"satellite"]) {
+        [mapObject setMapDisplayType:MAP_DISPLAY_TYPE_SATELLITE];
+    }else if ([command isEqualToString:@"hybrid"]){
+        [mapObject setMapDisplayType:MAP_DISPLAY_TYPE_HYBRID];
+    }else{
+        [mapObject setMapDisplayType:MAP_DISPLAY_TYPE_STANDARD];
+    }
+}
 
 @end
 
