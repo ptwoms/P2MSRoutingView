@@ -468,32 +468,32 @@
                 if (!cell) {
                     cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:RouteCellIdentifier];
                     cell.selectionStyle = UITableViewCellSelectionStyleGray;
-                    UILabel *title = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, self.view.bounds.size.width-20, 20)];
+                    UILabel *title = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, cell.contentView.bounds.size.width-20, 20)];
                     title.font = [UIFont systemFontOfSize:16];
                     title.tag = 15;
                     title.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-                    [cell addSubview:title];
+                    [cell.contentView addSubview:title];
                     
-                    P2MSDirectionView *directView = [[P2MSDirectionView alloc]initWithFrame:CGRectMake(5, 30, self.view.bounds.size.width-10, 35)];
+                    P2MSDirectionView *directView = [[P2MSDirectionView alloc]initWithFrame:CGRectMake(5, 30, cell.contentView.bounds.size.width-10, 35)];
                     directView.tag = 16;
                     directView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-                    [cell addSubview:directView];
+                    [cell.contentView addSubview:directView];
                     
-                    UILabel *viaLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 65, self.view.bounds.size.width-20, 15)];
+                    UILabel *viaLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 65, cell.contentView.bounds.size.width-20, 15)];
                     viaLabel.backgroundColor = [UIColor clearColor];
                     viaLabel.font = [UIFont systemFontOfSize:13];
                     viaLabel.textColor = [UIColor grayColor];
                     viaLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
                     viaLabel.tag = 321;
-                    [cell addSubview:viaLabel];
+                    [cell.contentView addSubview:viaLabel];
                 }
-                UILabel *titleLabel = (UILabel *)[cell viewWithTag:15];
+                UILabel *titleLabel = (UILabel *)[cell.contentView viewWithTag:15];
                 titleLabel.text = curRoute.routeOverviewTitle;
                 
-                UILabel *viaLabel = (UILabel *)[cell viewWithTag:321];
+                UILabel *viaLabel = (UILabel *)[cell.contentView viewWithTag:321];
                 viaLabel.text = curRoute.viaString;
                 
-                P2MSDirectionView *directView = (P2MSDirectionView *)[cell viewWithTag:16];
+                P2MSDirectionView *directView = (P2MSDirectionView *)[cell.contentView viewWithTag:16];
                 directView.routeOverview = curRoute.routeOverview;
                 
                 return cell;

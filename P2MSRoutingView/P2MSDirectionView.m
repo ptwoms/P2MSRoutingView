@@ -28,6 +28,11 @@
         [self redrawOverview];
 }
 
+- (void)layoutSubviews{
+    [super layoutSubviews];
+    [self redrawOverview];
+}
+
 - (void)redrawOverview{
     for (UIView *view in self.subviews) {
         [view removeFromSuperview];

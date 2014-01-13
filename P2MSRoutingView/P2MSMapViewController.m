@@ -356,7 +356,7 @@
     [super viewDidAppear:animated];
 
     if (pannedInfoView) {
-        pannedInfoView.hidden = NO;
+//        pannedInfoView.hidden = NO;
         [self adjustInfoView:mainScrollView withAnimation:0.0 toOrientation:self.interfaceOrientation];
     }
     [self animateCurrentRoute];
@@ -366,7 +366,7 @@
     [super viewWillDisappear:animated];
     if (pannedInfoView) {
         lastPageIndex = mainScrollView.contentOffset.x / mainScrollView.bounds.size.width;
-        pannedInfoView.hidden = YES;
+//        pannedInfoView.hidden = YES;
     }
 }
 
@@ -625,11 +625,11 @@
         panGestureOrigin = sender.view.frame.origin;
         translatedOrigin = CGPointZero;
         isPanned = YES;
-        //        if (sender.view.frame.size.height != self.view.bounds.size.height) {
-        //            CGRect paneViewRect = sender.view.frame;
-        //            paneViewRect.size.height = self.view.bounds.size.height;
-        //            sender.view.frame = paneViewRect;
-        //        }
+//        if (sender.view.frame.size.height != self.view.bounds.size.height) {
+//            CGRect paneViewRect = sender.view.frame;
+//            paneViewRect.size.height = self.view.bounds.size.height;
+//            sender.view.frame = paneViewRect;
+//        }
     }
     if (isGestureRecognizerOverlapped) {
         UITableView *tblView = (UITableView *)[mainScrollView viewWithTag:TABLEVIEW_TAG_BASE+lastPageIndex];
@@ -719,7 +719,6 @@
 
 - (void)adjustInfoView:(UIScrollView *)scrollView withAnimation:(CGFloat)duration toOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
     CGSize curDeviceDimension = [[UIScreen mainScreen]bounds].size;
-    
     CGFloat finalWidth;
     CGRect curRect = pannedInfoView.frame;
     if (isPannedViewOverlapped) {
